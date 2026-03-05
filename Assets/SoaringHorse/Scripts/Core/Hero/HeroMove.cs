@@ -3,18 +3,19 @@ using Zenject;
 
 public class HeroMove : MonoBehaviour
 {
-    [SerializeField] private InputManager _inputManager;
     [SerializeField] private Rigidbody2D _rigidbody;
 
+    private InputManager _inputManager;
     private GameConfig _gameConfig;
 
     private bool _canMove;
     private bool _started;
 
     [Inject]
-    private void Construct(GameConfig gameConfig)
+    private void Construct(GameConfig gameConfig, InputManager inputManager)
     {
         _gameConfig = gameConfig;
+        _inputManager = inputManager;
     }
 
     private void OnEnable()

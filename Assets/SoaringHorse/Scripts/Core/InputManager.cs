@@ -1,8 +1,8 @@
 using System;
-using UnityEngine;
 using UnityEngine.InputSystem;
+using Zenject;
 
-public class InputManager : MonoBehaviour
+public class InputManager :  IInitializable, IDisposable
 {
     public GameControls Controls { get; private set; }
 
@@ -10,15 +10,9 @@ public class InputManager : MonoBehaviour
     public event Action UpReleased;
     public event Action EscPressed;
 
-    private void Awake()
+    public void Initialize()
     {
-        DontDestroyOnLoad(gameObject);
-
         Controls = new GameControls();
-    }
-
-    private void OnEnable()
-    {
         Controls.PlayerActionMap.Enable();
 
         Controls.PlayerActionMap.Up.performed += OnUpPerformed;
@@ -27,7 +21,7 @@ public class InputManager : MonoBehaviour
         Controls.PlayerActionMap.Esc.performed += OnEscPerformed;
     }
 
-    private void OnDisable()
+    public void Dispose()
     {
         Controls.PlayerActionMap.Up.performed -= OnUpPerformed;
         Controls.PlayerActionMap.Up.canceled -= OnUpCanceled;
@@ -36,6 +30,7 @@ public class InputManager : MonoBehaviour
 
         Controls.PlayerActionMap.Disable();
     }
+
 
     private void OnUpPerformed(InputAction.CallbackContext ctx) => UpPressed?.Invoke();
     private void OnUpCanceled(InputAction.CallbackContext ctx) => UpReleased?.Invoke();

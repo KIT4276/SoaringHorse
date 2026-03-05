@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 6201527777678453475}
   - component: {fileID: 8245734592012656696}
   - component: {fileID: 2400905903341119241}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: crystal
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -151,7 +151,7 @@ GameObject:
   - component: {fileID: 7728304290766081692}
   - component: {fileID: 2259568171666969860}
   - component: {fileID: 2399242081344627437}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: crystal
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -297,7 +297,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5829560234316659930}
   - component: {fileID: 6334791001117611578}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Obstacle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -357,7 +357,7 @@ GameObject:
   - component: {fileID: 628985634258752619}
   - component: {fileID: 4339988010403986866}
   - component: {fileID: 3867265867817640259}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: crystal
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -497,7 +497,7 @@ GameObject:
   - component: {fileID: 696598983269104263}
   - component: {fileID: 6573486849204393387}
   - component: {fileID: 8789559826726565037}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: crystal
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -637,7 +637,7 @@ GameObject:
   - component: {fileID: 6782463529770670231}
   - component: {fileID: 6737215279343624326}
   - component: {fileID: 3699257110958948643}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: crystal
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -783,7 +783,7 @@ GameObject:
   - component: {fileID: 5131026160381420684}
   - component: {fileID: 8492878325954497040}
   - component: {fileID: 8427287852055746224}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: crystal
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -931,7 +931,7 @@ GameObject:
   - component: {fileID: 8972729867625158378}
   - component: {fileID: 4280961834354392399}
   - component: {fileID: 699706682721218271}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: crystal
   m_TagString: Untagged
   m_Icon: {fileID: 0}

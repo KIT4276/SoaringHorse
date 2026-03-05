@@ -17,7 +17,14 @@ MonoBehaviour:
   environmentMoveIncrease: 0.2
   spawnMargin: 10
   despawnMargin: 7
-  minY: -2.28
-  maxY: 2.28
+  minObstaclesY: -2.28
+  maxObstaclesY: 2.28
   fixedZ: 0
   pairSpacing: 7
+  minCloudsY: -5
+  maxCloudsY: 5
+  _fixedCloudZ: 0
+  _cloudSpacing: 10
+  _minBonusY: -5
+  _maxBonusY: 5
+  _bonusSpacing: 12

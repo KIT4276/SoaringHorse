@@ -9,14 +9,25 @@ public class GameConfig : ScriptableObject
     [Header("Environment")]
     [SerializeField] private float environmentMoveSpeed = 1;
     [SerializeField] private float environmentMoveIncrease = 0.2f;
-    [SerializeField] private float spawnMargin = 7f;       // насколько дальше за правой границей камеры держать “запас”
+    [SerializeField] private float spawnMargin = 7f;
     [SerializeField] private float despawnMargin = 7f;
 
     [Header("Obstacles")]
-    [SerializeField] private float minY = -2.28f;
-    [SerializeField] private float maxY = 2.28f;
+    [SerializeField] private float minObstaclesY = -2.28f;
+    [SerializeField] private float maxObstaclesY = 2.28f;
     [SerializeField] private float fixedZ = 0f;
-    [SerializeField] private float pairSpacing = 7f;       // каждая следующая пара +7 по X (в локальных координатах контейнера)
+    [SerializeField] private float pairSpacing = 7f;
+
+    [Header("Clouds")]
+    [SerializeField] private float minCloudsY = -5f;
+    [SerializeField] private float maxCloudsY = 5f;
+    [SerializeField] private float _fixedCloudZ = 0;
+    [SerializeField] private float _cloudSpacing = 7;
+
+    [Header("Bonuses")]
+    [SerializeField] private float _minBonusY = -5;
+    [SerializeField] private float _maxBonusY = 5;
+    [SerializeField] private float _bonusSpacing = 5;
 
     //Hero
     public float HeroUpForce { get => heroUpForce; }
@@ -28,8 +39,19 @@ public class GameConfig : ScriptableObject
     public float DespawnEnvironmentMargin { get => despawnMargin; }
 
     //Obstacles
-    public float MinObstY { get => minY; }
-    public float MaxObstY { get => maxY; }
+    public float MinObstY { get => minObstaclesY; }
+    public float MaxObstY { get => maxObstaclesY; }
     public float FixedObstZ { get => fixedZ; }
     public float PairObstSpacing { get => pairSpacing; }
+
+    //Clouds
+    public float MinCloudY { get => minCloudsY; }
+    public float MaxCloudY { get => maxCloudsY; }
+    public float FixedCloudZ { get => _fixedCloudZ; }
+    public float CloudSpacing { get => _cloudSpacing; }
+
+    //Bonuses
+    public float MinBonusY { get => _minBonusY; }
+    public float MaxBonusY { get => _maxBonusY; }
+    public float BonusSpacing { get => _bonusSpacing; }
 }
