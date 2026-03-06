@@ -8,19 +8,38 @@ public class Bonus : BaseRecyclable
     [Space]
     [SerializeField] private Sprite _lifeBonusSprite;
     [SerializeField] private Sprite _luckBonusSprite;
+    [Space]
+    [SerializeField] private int _value = 1;
 
     private bool _inited = false;
     private Coroutine _waitInitRoutine;
+    private LiveSystem _liveSystem;
 
     public BonusType BonusType { get; private set; }
+
+    [Inject]
+    private void Construct(LiveSystem liveSystem)
+        => _liveSystem = liveSystem;
 
     public void Initialize(BonusType bonusType)
     {
         BonusType = bonusType;
         _inited = true;
     }
+    public  void RewardedDespawn()
+    {
+        switch (BonusType)
+        {
+            case BonusType.luck:
+                break;
+            case BonusType.life:
+                _liveSystem.AddLives(_value);
+                break;
+        }
+        Despawn();
+    }
 
-    protected override void ActivateSprite()
+    protected override void Activate()
     {
         if (_inited)
         {

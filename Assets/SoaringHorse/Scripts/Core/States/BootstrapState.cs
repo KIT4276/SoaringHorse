@@ -1,3 +1,5 @@
+using UnityEngine;
+
 public sealed class BootstrapState : IGameState
 {
     private readonly IGameStateMachine _sm;
@@ -11,6 +13,7 @@ public sealed class BootstrapState : IGameState
 
     public void Enter()
     {
+        //Debug.Log("Enter BootstrapState");
         _yandex.Init();
         _sm.Enter<LoadSaveState>();
     }

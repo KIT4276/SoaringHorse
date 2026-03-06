@@ -1,4 +1,5 @@
 using System;
+using UnityEngine;
 using Zenject;
 
 public sealed class GameStateMachine : IGameStateMachine, IInitializable, ITickable, IDisposable
@@ -44,6 +45,7 @@ public sealed class GameStateMachine : IGameStateMachine, IInitializable, ITicka
         _currentType = type;
 
         _current.Enter();
+       // Debug.Log("Enter " + _current);
     }
 
     public void Pause()
@@ -74,5 +76,6 @@ public sealed class GameStateMachine : IGameStateMachine, IInitializable, ITicka
         _currentType = type;
 
         _current.Enter();
+       // Debug.Log("EnterByType " + _current);
     }
 }

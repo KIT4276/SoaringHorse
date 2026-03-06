@@ -3,7 +3,7 @@ using Zenject;
 
 public class Cloud : BaseRecyclable
 {
-    protected override void ActivateSprite()
+    protected override void Activate()
     => ActivateRandomSprite();
 
     public class Factory : PlaceholderFactory<Vector3, Cloud> { }

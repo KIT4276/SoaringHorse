@@ -7,7 +7,7 @@ public abstract class BaseRecyclable : MonoBehaviour, IPoolable<Vector3, IMemory
 
     protected IMemoryPool _pool;
 
-    protected abstract void ActivateSprite();
+    protected abstract void Activate();
 
     public void OnSpawned(Vector3 spawnPos, IMemoryPool pool)
     {
@@ -16,7 +16,7 @@ public abstract class BaseRecyclable : MonoBehaviour, IPoolable<Vector3, IMemory
 
         gameObject.SetActive(true);
 
-        ActivateSprite();
+        Activate();
     }
 
 

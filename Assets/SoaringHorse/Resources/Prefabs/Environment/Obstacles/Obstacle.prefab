@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 6201527777678453475}
   - component: {fileID: 8245734592012656696}
   - component: {fileID: 2400905903341119241}
+  - component: {fileID: 5422425206594404150}
   m_Layer: 6
   m_Name: crystal
   m_TagString: Untagged
@@ -140,6 +141,20 @@ PolygonCollider2D:
       - {x: -0.3607793, y: -2.7405596}
       - {x: 0.99146235, y: -2.8756423}
   m_UseDelaunayMesh: 0
+--- !u!114 &5422425206594404150
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4452475390155212021}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ff4737cb5078f9e41b006b0cf2d5a48d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _collider: {fileID: 0}
+  _crystal: {fileID: 6334791001117611578}
 --- !u!1 &5075779734018344791
 GameObject:
   m_ObjectHideFlags: 0
@@ -151,6 +166,7 @@ GameObject:
   - component: {fileID: 7728304290766081692}
   - component: {fileID: 2259568171666969860}
   - component: {fileID: 2399242081344627437}
+  - component: {fileID: 5916262891836562427}
   m_Layer: 6
   m_Name: crystal
   m_TagString: Untagged
@@ -287,6 +303,20 @@ PolygonCollider2D:
       - {x: -2.050378, y: -2.3775268}
       - {x: 1.7174573, y: -2.4052243}
   m_UseDelaunayMesh: 0
+--- !u!114 &5916262891836562427
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5075779734018344791}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ff4737cb5078f9e41b006b0cf2d5a48d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _collider: {fileID: 0}
+  _crystal: {fileID: 6334791001117611578}
 --- !u!1 &5287398155648133352
 GameObject:
   m_ObjectHideFlags: 0
@@ -346,6 +376,7 @@ MonoBehaviour:
   - {fileID: 5075779734018344791}
   - {fileID: 6333486721599105616}
   - {fileID: 8214615603821986936}
+  _value: 1
 --- !u!1 &6088681184296844432
 GameObject:
   m_ObjectHideFlags: 0
@@ -357,6 +388,7 @@ GameObject:
   - component: {fileID: 628985634258752619}
   - component: {fileID: 4339988010403986866}
   - component: {fileID: 3867265867817640259}
+  - component: {fileID: 434420175627139044}
   m_Layer: 6
   m_Name: crystal
   m_TagString: Untagged
@@ -486,6 +518,20 @@ PolygonCollider2D:
       - {x: -1.6017143, y: -2.555315}
       - {x: 0.6691527, y: -2.7389305}
   m_UseDelaunayMesh: 0
+--- !u!114 &434420175627139044
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6088681184296844432}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ff4737cb5078f9e41b006b0cf2d5a48d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _collider: {fileID: 0}
+  _crystal: {fileID: 6334791001117611578}
 --- !u!1 &6333486721599105616
 GameObject:
   m_ObjectHideFlags: 0
@@ -497,6 +543,7 @@ GameObject:
   - component: {fileID: 696598983269104263}
   - component: {fileID: 6573486849204393387}
   - component: {fileID: 8789559826726565037}
+  - component: {fileID: 2122101985308481374}
   m_Layer: 6
   m_Name: crystal
   m_TagString: Untagged
@@ -626,6 +673,20 @@ PolygonCollider2D:
       - {x: -0.6598555, y: -2.441389}
       - {x: 0.9767675, y: -2.3128111}
   m_UseDelaunayMesh: 0
+--- !u!114 &2122101985308481374
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6333486721599105616}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ff4737cb5078f9e41b006b0cf2d5a48d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _collider: {fileID: 0}
+  _crystal: {fileID: 6334791001117611578}
 --- !u!1 &6838204077159033980
 GameObject:
   m_ObjectHideFlags: 0
@@ -637,6 +698,7 @@ GameObject:
   - component: {fileID: 6782463529770670231}
   - component: {fileID: 6737215279343624326}
   - component: {fileID: 3699257110958948643}
+  - component: {fileID: 2678605145147221284}
   m_Layer: 6
   m_Name: crystal
   m_TagString: Untagged
@@ -772,6 +834,20 @@ PolygonCollider2D:
       - {x: -2.1613858, y: -2.7874014}
       - {x: 1.5142189, y: -2.7507305}
   m_UseDelaunayMesh: 0
+--- !u!114 &2678605145147221284
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6838204077159033980}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ff4737cb5078f9e41b006b0cf2d5a48d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _collider: {fileID: 0}
+  _crystal: {fileID: 6334791001117611578}
 --- !u!1 &8214615603821986936
 GameObject:
   m_ObjectHideFlags: 0
@@ -783,6 +859,7 @@ GameObject:
   - component: {fileID: 5131026160381420684}
   - component: {fileID: 8492878325954497040}
   - component: {fileID: 8427287852055746224}
+  - component: {fileID: 2856977818788884668}
   m_Layer: 6
   m_Name: crystal
   m_TagString: Untagged
@@ -920,6 +997,20 @@ PolygonCollider2D:
       - {x: -1.1162527, y: -2.4900784}
       - {x: 0.7664089, y: -2.4984567}
   m_UseDelaunayMesh: 0
+--- !u!114 &2856977818788884668
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8214615603821986936}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ff4737cb5078f9e41b006b0cf2d5a48d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _collider: {fileID: 0}
+  _crystal: {fileID: 6334791001117611578}
 --- !u!1 &9080819694606261042
 GameObject:
   m_ObjectHideFlags: 0
@@ -931,6 +1022,7 @@ GameObject:
   - component: {fileID: 8972729867625158378}
   - component: {fileID: 4280961834354392399}
   - component: {fileID: 699706682721218271}
+  - component: {fileID: 7384930183870031754}
   m_Layer: 6
   m_Name: crystal
   m_TagString: Untagged
@@ -1065,3 +1157,17 @@ PolygonCollider2D:
       - {x: -0.80312014, y: -2.362943}
       - {x: 1.0048693, y: -2.3990362}
   m_UseDelaunayMesh: 0
+--- !u!114 &7384930183870031754
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9080819694606261042}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ff4737cb5078f9e41b006b0cf2d5a48d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _collider: {fileID: 0}
+  _crystal: {fileID: 6334791001117611578}

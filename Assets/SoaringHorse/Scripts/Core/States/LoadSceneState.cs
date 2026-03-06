@@ -3,14 +3,13 @@ public sealed class LoadSceneState : IGameState, ITickableState
     private readonly IGameStateMachine _sm;
     private readonly ISceneLoader _loader;
 
-    // замени на свой источник (GameConfig / константа)
     private readonly string _sceneName;
 
-    public LoadSceneState(IGameStateMachine sm, ISceneLoader loader)
+    public LoadSceneState(IGameStateMachine sm, ISceneLoader loader, GameConfig config)
     {
         _sm = sm;
         _loader = loader;
-        _sceneName = "Game"; // TODO: взять из конфига
+        _sceneName = config.GameSceneName; 
     }
 
     public void Enter() => _loader.Load(_sceneName);

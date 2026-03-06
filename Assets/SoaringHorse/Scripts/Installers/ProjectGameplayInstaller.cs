@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using Zenject;
 
@@ -15,8 +16,15 @@ public class ProjectGameplayInstaller : MonoInstaller
         BindConfig();
         BindPlatformObjects();
         BindCoreServices();
+        BindSystems();
         BindStateMachine();
         BindInput();
+    }
+
+    private void BindSystems()
+    {
+        Container.Bind<LiveSystem>()
+            .AsSingle();            
     }
 
     private void BindConfig()

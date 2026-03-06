@@ -3,8 +3,11 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "Soaring Horse/Balance/Game Config", fileName = "GameConfig")]
 public class GameConfig : ScriptableObject
 {
+    [SerializeField] private string _gameSceneName = "GameScene";
+
     [Header("Hero")]
     [SerializeField] private float heroUpForce = 3;
+    [SerializeField] private int maxLifes = 10;
 
     [Header("Environment")]
     [SerializeField] private float environmentMoveSpeed = 1;
@@ -28,6 +31,9 @@ public class GameConfig : ScriptableObject
     [SerializeField] private float _minBonusY = -5;
     [SerializeField] private float _maxBonusY = 5;
     [SerializeField] private float _bonusSpacing = 5;
+
+    public string GameSceneName { get => _gameSceneName; }
+    public int MaxLifes { get => maxLifes; }
 
     //Hero
     public float HeroUpForce { get => heroUpForce; }
@@ -54,4 +60,5 @@ public class GameConfig : ScriptableObject
     public float MinBonusY { get => _minBonusY; }
     public float MaxBonusY { get => _maxBonusY; }
     public float BonusSpacing { get => _bonusSpacing; }
+
 }

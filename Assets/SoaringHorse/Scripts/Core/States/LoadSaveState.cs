@@ -1,3 +1,5 @@
+using UnityEngine;
+
 public sealed class LoadSaveState : IGameState, ITickableState
 {
     private readonly IGameStateMachine _sm;
@@ -11,12 +13,14 @@ public sealed class LoadSaveState : IGameState, ITickableState
         _progress = progress;
     }
 
-    public void Enter() => _save.LoadOrCreate();
+    public void Enter()
+    {
+        _save.LoadOrCreate();
+    }
 
     public void Tick()
     {
         if (!_save.IsLoaded) return;
-
         _progress.ApplyFromSave(_save.Data);
         _sm.Enter<LoadSceneState>();
     }

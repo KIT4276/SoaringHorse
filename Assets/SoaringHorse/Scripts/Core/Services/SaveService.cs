@@ -23,6 +23,9 @@ public sealed class SaveService : ISaveService, ITickable, IDisposable
     private const float CloudMinIntervalSec = 20f;
     private const float CloudDebounceSec = 5f;
 
+    private float _cloudLoadDeadline;
+    private const float CloudLoadTimeoutSec = 3f;
+
     public SaveService(YandexPlatform platform)
     {
         _platform = platform;
@@ -62,13 +65,26 @@ public sealed class SaveService : ISaveService, ITickable, IDisposable
         TryStartCloudLoadOrFinish();
     }
 
-    private void OnSdkReady() => TryStartCloudLoadOrFinish();
-    private void OnPlayerReady(bool _) => TryStartCloudLoadOrFinish();
+    private void OnSdkReady()
+    {
+        TryStartCloudLoadOrFinish();
+    }
+
+    private void OnPlayerReady(bool hasPlayer)
+    {
+        TryStartCloudLoadOrFinish();
+    }
 
     private void TryStartCloudLoadOrFinish()
     {
+
         if (_waitingCloud) return;
-        if (!_platform.IsSdkReady) return;
+        if (!_platform.IsSdkReady)
+        {
+            ApplyLoaded(_localCandidate ?? NewDefault());
+            FinishLoad();
+            return;
+        }
 
         if (!_platform.HasPlayer)
         {
@@ -78,6 +94,7 @@ public sealed class SaveService : ISaveService, ITickable, IDisposable
         }
 
         _waitingCloud = true;
+        _cloudLoadDeadline = Time.unscaledTime + CloudLoadTimeoutSec;
         _platform.CloudLoad();
     }
 
@@ -126,6 +143,13 @@ public sealed class SaveService : ISaveService, ITickable, IDisposable
 
     public void Tick()
     {
+        if (_waitingCloud && Time.unscaledTime >= _cloudLoadDeadline)
+        {
+            _waitingCloud = false;
+            ApplyLoaded(_localCandidate ?? NewDefault());
+            FinishLoad();
+        }
+
         if (!_cloudDirty) return;
         if (_platform == null) return;
         if (!_platform.IsSdkReady || !_platform.HasPlayer) return;
