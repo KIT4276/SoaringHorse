@@ -12,8 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 25bdabe481340284ab0734ae6e86bf7e, type: 3}
   m_Name: GameConfig
   m_EditorClassIdentifier: 
+  _gameSceneName: GameScene
+  _experienceIncrease: 0.005
+  _timeExperienceIncrease: 4
   heroUpForce: 3
-  environmentMoveSpeed: 3
+  maxLifes: 10
+  environmentMoveSpeed: 4
   environmentMoveIncrease: 0.2
   spawnMargin: 10
   despawnMargin: 7

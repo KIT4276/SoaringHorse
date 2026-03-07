@@ -14,12 +14,16 @@ public class Bonus : BaseRecyclable
     private bool _inited = false;
     private Coroutine _waitInitRoutine;
     private LiveSystem _liveSystem;
+    private ScoreSystem _scoreSystem;
 
     public BonusType BonusType { get; private set; }
 
     [Inject]
-    private void Construct(LiveSystem liveSystem)
-        => _liveSystem = liveSystem;
+    private void Construct(LiveSystem liveSystem, ScoreSystem scoreSystem)
+    {
+        _liveSystem = liveSystem;
+        _scoreSystem = scoreSystem;
+    }
 
     public void Initialize(BonusType bonusType)
     {
@@ -31,6 +35,7 @@ public class Bonus : BaseRecyclable
         switch (BonusType)
         {
             case BonusType.luck:
+                _scoreSystem.ChangeScore((float)_value);
                 break;
             case BonusType.life:
                 _liveSystem.AddLives(_value);

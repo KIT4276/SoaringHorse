@@ -6,8 +6,8 @@ public class SaveData
     public const int CurrentVersion = 1;
 
     public int version = CurrentVersion;
-    public int exp = 0;
-    public int score = 0;
+    public float exp = 0;
+    public float score = 0;
     public int lifes = 3;
 
     public long lastWriteUnixUtc = 0;

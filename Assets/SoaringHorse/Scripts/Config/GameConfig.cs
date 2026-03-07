@@ -4,6 +4,8 @@ using UnityEngine;
 public class GameConfig : ScriptableObject
 {
     [SerializeField] private string _gameSceneName = "GameScene";
+    [SerializeField] private float _experienceIncrease = 0.02f;
+    [SerializeField] private int _timeExperienceIncrease = 3;
 
     [Header("Hero")]
     [SerializeField] private float heroUpForce = 3;
@@ -34,6 +36,8 @@ public class GameConfig : ScriptableObject
 
     public string GameSceneName { get => _gameSceneName; }
     public int MaxLifes { get => maxLifes; }
+    public float ExperienceIncrease { get => _experienceIncrease; }
+    public int TimeExperienceIncrease { get => _timeExperienceIncrease; }
 
     //Hero
     public float HeroUpForce { get => heroUpForce; }

@@ -4,14 +4,14 @@ public sealed class PlayerProgress : IPlayerProgress
 {
     public event Action Changed;
 
-    private int _exp;
-    private int _score;
+    private float _exp;
+    private float _score;
     private int _lifes;
 
     private bool _suppress;
 
-    public int Exp => _exp;
-    public int Score => _score;
+    public float Exp => _exp;
+    public float Score => _score;
     public int Lifes => _lifes;
 
     public void ApplyFromSave(SaveData data)
@@ -25,7 +25,7 @@ public sealed class PlayerProgress : IPlayerProgress
         _suppress = false;
     }
 
-    public void AddExp(int delta)
+    public void AddExp(float delta)
     {
         if (delta == 0) return;
         _exp += delta;
@@ -33,7 +33,7 @@ public sealed class PlayerProgress : IPlayerProgress
         Notify();
     }
 
-    public void AddScore(int delta)
+    public void AddScore(float delta)
     {
         if (delta == 0) return;
         _score += delta;

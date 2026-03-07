@@ -21,7 +21,7 @@ public class LiveSystem
     {
         CurrentLives = _progress.Lifes;
         ChangeValue?.Invoke(CurrentLives);
-        Debug.Log("Initialize " + CurrentLives);
+       // Debug.Log("[LiveSystem] Initialize " + CurrentLives);
     }
 
     public void AddLives(int value)
@@ -34,7 +34,7 @@ public class LiveSystem
 
         ChangeValue?.Invoke(CurrentLives);
 
-        Debug.Log(CurrentLives);
+        //Debug.Log("[LiveSystem] " + CurrentLives);
     }
 
     public void SubtractLives(int value)
@@ -45,7 +45,7 @@ public class LiveSystem
 
         _progress.SetLifes(CurrentLives);
         ChangeValue?.Invoke(CurrentLives);
-        Debug.Log(CurrentLives);
+        //Debug.Log("[LiveSystem] "+ CurrentLives);
 
         if (CurrentLives == 0)
             Death?.Invoke();
