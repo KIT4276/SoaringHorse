@@ -603,6 +603,7 @@ MonoBehaviour:
   _cloudPrefab: {fileID: 8231617236417956271, guid: a531a7e4fbf97ba4990f977ba8040f4b, type: 3}
   _bonusPrefab: {fileID: 1211989575154682044, guid: 175098728517d784a84453b3b6717e70, type: 3}
   _initialSize: 20
+  _uiPrefab: {fileID: 2847383001472317109, guid: 7e7605d92b090a94b9fc6105a8dca57b, type: 3}
 --- !u!1 &1223003652
 GameObject:
   m_ObjectHideFlags: 0

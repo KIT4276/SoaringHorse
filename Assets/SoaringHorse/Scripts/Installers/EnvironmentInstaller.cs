@@ -7,6 +7,8 @@ public class EnvironmentInstaller : MonoInstaller
     [SerializeField] private Cloud _cloudPrefab;
     [SerializeField] private Bonus _bonusPrefab;
     [SerializeField] private int _initialSize = 20;
+    [Space]
+    [SerializeField] private GameUI _uiPrefab;
 
     private const string EnvGroup = "EnvironmentPoolRoot";
 
@@ -15,6 +17,15 @@ public class EnvironmentInstaller : MonoInstaller
         InstallCrystals();
         InstallClouds();
         InstallBonuses();
+
+        BindUI();
+}
+
+    private void BindUI()
+    {
+        Container.BindInterfacesAndSelfTo<GameUI>()
+            .FromComponentInNewPrefab(_uiPrefab)
+            .AsSingle();
     }
 
     private void InstallCrystals()

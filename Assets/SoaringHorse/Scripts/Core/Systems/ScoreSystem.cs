@@ -22,7 +22,6 @@ public class ScoreSystem
         ChangeValue?.Invoke(Score);
 
         _experienceSystem.ChangeValue += OnExpChanged;
-         Debug.Log($"[ScoreSystem] Initialize {Score:F3}");
     }
 
     public void ChangeScore(float value)
@@ -30,7 +29,6 @@ public class ScoreSystem
         Score += value;
         _progress.AddScore(Score);
         ChangeValue?.Invoke(Score);
-        Debug.Log($"[ScoreSystem]  {Score:F3}");
     }
 
     private void OnExpChanged(float exp)

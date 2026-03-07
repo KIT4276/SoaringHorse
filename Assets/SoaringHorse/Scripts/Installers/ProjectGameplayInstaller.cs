@@ -10,7 +10,7 @@ public class ProjectGameplayInstaller : MonoInstaller
     [Header("Platform (prefabs)")]
     [SerializeField] private YandexPlatform _platformPrefab;
     [SerializeField] private CoroutineRunner _coroutineRunnerPrefab;
-    [SerializeField] private GameUI _uiPrefab;
+    //[SerializeField] private GameUI _uiPrefab;
 
     public override void InstallBindings()
     {
@@ -21,15 +21,15 @@ public class ProjectGameplayInstaller : MonoInstaller
         BindStateMachine();
         BindInput();
 
-        BindUI();
     }
+    //    BindUI();
 
-    private void BindUI()
-    {
-        Container.BindInterfacesAndSelfTo<GameUI>()
-            .FromComponentInNewPrefab(_uiPrefab)
-            .AsSingle();
-    }
+    //private void BindUI()
+    //{
+    //    Container.BindInterfacesAndSelfTo<GameUI>()
+    //        .FromComponentInNewPrefab(_uiPrefab)
+    //        .AsSingle();
+    //}
 
     private void BindSystems()
     {
