@@ -521,7 +521,7 @@ MonoBehaviour:
     m_Bits: 64
   _checkRadius: 0.35
   _maxTries: 8
-  _luckChance: 1
+  _luckChance: 0.75
 --- !u!1 &948004435
 GameObject:
   m_ObjectHideFlags: 0
