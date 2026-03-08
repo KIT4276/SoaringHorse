@@ -6,7 +6,7 @@ public interface ISaveService
     bool IsLoaded { get; }
     event Action Loaded;
 
-    void LoadOrCreate();
+    void LoadOrCreate(bool tryLoad = true);
 
     void SaveLocalNow();
     void RequestCloudSave();

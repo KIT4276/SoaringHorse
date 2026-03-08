@@ -77,4 +77,4 @@ MonoBehaviour:
   _gameConfig: {fileID: 11400000, guid: ac697332eccb561479f3865247843bfc, type: 2}
   _platformPrefab: {fileID: 9093348376603879295, guid: c006450510ab94a47bba03577e5777e0, type: 3}
   _coroutineRunnerPrefab: {fileID: 751459181109923041, guid: b4892d28fb130e641911a0b0eeda4ca8, type: 3}
-  _uiPrefab: {fileID: 2847383001472317109, guid: 7e7605d92b090a94b9fc6105a8dca57b, type: 3}
+  _startMenuPrefab: {fileID: 1043050910198529695, guid: a961d709cc3fdfb4ca62c92b8c3f1b49, type: 3}

@@ -4,18 +4,19 @@ public sealed class BootstrapState : IGameState
 {
     private readonly IGameStateMachine _sm;
     private readonly IYandexService _yandex;
+    private StartMenu _startMenu;
 
-    public BootstrapState(IGameStateMachine sm, IYandexService yandex)
+    public BootstrapState(IGameStateMachine sm, IYandexService yandex, StartMenu startMenu)
     {
         _sm = sm;
         _yandex = yandex;
+        _startMenu = startMenu;
     }
 
     public void Enter()
     {
-        //Debug.Log("Enter BootstrapState");
         _yandex.Init();
-        _sm.Enter<LoadSaveState>();
+        _startMenu.Init();
     }
 
     public void Exit() { }

@@ -10,6 +10,8 @@ public class ProjectGameplayInstaller : MonoInstaller
     [Header("Platform (prefabs)")]
     [SerializeField] private YandexPlatform _platformPrefab;
     [SerializeField] private CoroutineRunner _coroutineRunnerPrefab;
+    [SerializeField] private StartMenu _startMenuPrefab;
+
     //[SerializeField] private GameUI _uiPrefab;
 
     public override void InstallBindings()
@@ -17,11 +19,24 @@ public class ProjectGameplayInstaller : MonoInstaller
         BindConfig();
         BindPlatformObjects();
         BindCoreServices();
+        BindStartMenu();
         BindSystems();
         BindStateMachine();
         BindInput();
 
     }
+
+    private void BindStartMenu()
+    {
+        Container.Bind<StartMenuController>()
+            .AsSingle();
+
+        Container.Bind<StartMenu>()
+            .FromComponentInNewPrefab(_startMenuPrefab)
+            .AsSingle()
+            .NonLazy();
+    }
+
     //    BindUI();
 
     //private void BindUI()
@@ -97,7 +112,7 @@ public class ProjectGameplayInstaller : MonoInstaller
     private void BindStateMachine()
     {
         Container.Bind<BootstrapState>().AsSingle();
-        Container.Bind<LoadSaveState>().AsSingle();
+        //Container.Bind<LoadSaveState>().AsSingle();
         Container.Bind<LoadSceneState>().AsSingle();
         Container.Bind<GameStartState>().AsSingle();
         Container.Bind<GameplayState>().AsSingle();

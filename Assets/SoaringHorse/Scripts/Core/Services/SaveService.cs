@@ -39,7 +39,7 @@ public sealed class SaveService : ISaveService, ITickable, IDisposable
         _platform.SdkReady -= OnSdkReady;
     }
 
-    public void LoadOrCreate()
+    public void LoadOrCreate(bool tryLoad = true)
     {
         IsLoaded = false;
         _waitingCloud = false;
@@ -63,6 +63,7 @@ public sealed class SaveService : ISaveService, ITickable, IDisposable
         _platform.SdkReady += OnSdkReady;
 
         TryStartCloudLoadOrFinish();
+
     }
 
     private void OnSdkReady()

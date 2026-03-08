@@ -27,7 +27,7 @@ public class ScoreSystem
     public void ChangeScore(float value)
     {
         Score += value;
-        _progress.AddScore(Score);
+        _progress.AddScore(value);
         ChangeValue?.Invoke(Score);
     }
 
