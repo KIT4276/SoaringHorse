@@ -1,5 +1,4 @@
 using System;
-using UnityEngine;
 
 public class ScoreSystem
 {
@@ -31,8 +30,6 @@ public class ScoreSystem
         ChangeValue?.Invoke(Score);
     }
 
-    private void OnExpChanged(float exp)
-    {
+    private void OnExpChanged(float exp) => 
         ChangeScore(exp);
-    }
 }

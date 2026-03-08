@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 using Zenject;
 
@@ -11,8 +10,6 @@ public class ProjectGameplayInstaller : MonoInstaller
     [SerializeField] private YandexPlatform _platformPrefab;
     [SerializeField] private CoroutineRunner _coroutineRunnerPrefab;
     [SerializeField] private StartMenu _startMenuPrefab;
-
-    //[SerializeField] private GameUI _uiPrefab;
 
     public override void InstallBindings()
     {
@@ -36,15 +33,6 @@ public class ProjectGameplayInstaller : MonoInstaller
             .AsSingle()
             .NonLazy();
     }
-
-    //    BindUI();
-
-    //private void BindUI()
-    //{
-    //    Container.BindInterfacesAndSelfTo<GameUI>()
-    //        .FromComponentInNewPrefab(_uiPrefab)
-    //        .AsSingle();
-    //}
 
     private void BindSystems()
     {
@@ -93,26 +81,20 @@ public class ProjectGameplayInstaller : MonoInstaller
     {
         Container.Bind<IPauseService>().To<PauseService>().AsSingle();
 
-        // модель прогресса (замена GameLoop)
         Container.Bind<IPlayerProgress>().To<PlayerProgress>().AsSingle();
 
-        // сервис платформы (Init/Ready, пауза от рекламы, rewarded/interstitial)
         Container.BindInterfacesAndSelfTo<YandexService>().AsSingle().NonLazy();
 
-        // сейвы (local + cloud, debounce/interval, async load)
         Container.BindInterfacesAndSelfTo<SaveService>().AsSingle().NonLazy();
 
-        // автосейв на изменениях прогресса (если используешь)
         Container.BindInterfacesTo<ProgressAutosave>().AsSingle();
 
-        // загрузка сцен для LoadSceneState
         Container.Bind<ISceneLoader>().To<SceneLoader>().AsSingle();
     }
 
     private void BindStateMachine()
     {
         Container.Bind<BootstrapState>().AsSingle();
-        //Container.Bind<LoadSaveState>().AsSingle();
         Container.Bind<LoadSceneState>().AsSingle();
         Container.Bind<GameStartState>().AsSingle();
         Container.Bind<GameplayState>().AsSingle();

@@ -14,10 +14,6 @@ public class StartMenu : MonoBehaviour
     public void Construct(StartMenuController startMenuController)
         => _controller = startMenuController;
 
-    //public void Awake()
-    //{
-    //}
-
     public void Init()
     {
         _startGameButton.onClick.AddListener(StartNewGame);

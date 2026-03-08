@@ -32,7 +32,7 @@ public class ExperienceSystem : ITickable
     public void AddExp(float value)
     {
         Exp += value;
-        _progress.AddExp(Exp);
+        _progress.AddExp(value);
         ChangeValue?.Invoke(Exp);
         //Debug.Log($"[ExperienceSystem {Exp:F2}] ");
     }
