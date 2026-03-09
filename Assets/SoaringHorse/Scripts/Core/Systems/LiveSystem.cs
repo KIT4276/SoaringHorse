@@ -8,7 +8,11 @@ public class LiveSystem
 
     public int CurrentLives { get; private set; }
 
-    public event Action<int> ChangeValue;
+    //public event Action<int> ChangeValue;
+
+    public event Action<int> ValueIncreased;
+    public event Action<int> ValueDecreased;
+
     public event Action Death;
 
     public LiveSystem(IPlayerProgress progress, GameConfig config)
@@ -20,7 +24,7 @@ public class LiveSystem
     public void Initialize()
     {
         CurrentLives = _progress.Lifes;
-        ChangeValue?.Invoke(CurrentLives);
+        ValueIncreased?.Invoke(CurrentLives);
        // Debug.Log("[LiveSystem] Initialize " + CurrentLives);
     }
 
@@ -32,7 +36,7 @@ public class LiveSystem
        if (CurrentLives > _maxLifes)
             CurrentLives = _maxLifes;
 
-        ChangeValue?.Invoke(CurrentLives);
+        ValueIncreased?.Invoke(CurrentLives);
 
         //Debug.Log("[LiveSystem] " + CurrentLives);
     }
@@ -44,7 +48,7 @@ public class LiveSystem
             CurrentLives = 0;
 
         _progress.SetLifes(CurrentLives);
-        ChangeValue?.Invoke(CurrentLives);
+        ValueDecreased?.Invoke(CurrentLives);
         //Debug.Log("[LiveSystem] "+ CurrentLives);
 
         if (CurrentLives == 0)

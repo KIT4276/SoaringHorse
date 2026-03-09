@@ -1,39 +1,28 @@
 using UnityEngine;
-using UnityEngine.UI;
+using Zenject;
 
-public class PauseMenu : MonoBehaviour
+public class PauseMenu 
 {
-    [SerializeField] private Button _exitButton;
-    [SerializeField] private Button _reduceSpeedButton;
-    [SerializeField] private Button _startAgainButton;
+    private StartMenuController _startMenuController;
+    private IRewardedSlowdownService _rewardedSlowdownService;
 
-    private void Awake()
+    [Inject]
+    public void Construct(
+       StartMenuController startMenuController,
+       IRewardedSlowdownService rewardedSlowdownService)
     {
-        _exitButton.onClick.AddListener(Exit);
-        _reduceSpeedButton.onClick.AddListener(ShowRewarded);
-        _startAgainButton.onClick.AddListener(StartAgain);
+        _startMenuController = startMenuController;
+        _rewardedSlowdownService = rewardedSlowdownService;
     }
 
-    private void OnDestruy()
+    public void StartAgain() => 
+        _startMenuController.StartNewGame();
+
+    public void ShowRewarded()
     {
-        _exitButton.onClick.RemoveListener(Exit);
-        _reduceSpeedButton.onClick.RemoveListener(ShowRewarded);
-        _startAgainButton.onClick.RemoveListener(StartAgain);
+        _rewardedSlowdownService.TryReduceSpeed();
     }
 
-    private void StartAgain()
-    {
-        //TODO
-    }
-
-    private void ShowRewarded()
-    {
-        //TODO
-    }
-
-    private void Exit()
-    {
-       //TODO 
+    public void Exit() => 
         Application.Quit();
-    }
 }

@@ -1,15 +1,14 @@
-using System;
 using UnityEngine;
 using Zenject;
 
 public class EnvironmentMove : MonoBehaviour
 {
     private float _startMoveSpeed;
-    private float _currentMoveSpeed;
+    [SerializeField]private float _currentMoveSpeed;
     private ExperienceSystem _experienceSystem;
     private Vector3 _moveVector = Vector3.zero;
 
-    public float MoveSpeed { get => _currentMoveSpeed; }
+    public float MoveSpeed => _currentMoveSpeed;
 
     [Inject]
     private void Construct(GameConfig gameConfig, ExperienceSystem experienceSystem)
@@ -19,24 +18,32 @@ public class EnvironmentMove : MonoBehaviour
         _experienceSystem = experienceSystem;
     }
 
-    private void Start()
-    {
+    private void Start() => 
         _experienceSystem.ChangeValue += OnExpChanged;
-    }
 
-    private void OnExpChanged(float exp)
-    {
+    private void OnDestroy() => 
+        _experienceSystem.ChangeValue -= OnExpChanged;
+
+    private void OnExpChanged(float exp) => 
         ChangeSpeed(exp);
-    }
 
     private void Update() =>
         OnMoveEnvironment();
 
-    public void ChangeSpeed(float increase) => 
+    public void ChangeSpeed(float increase) =>
         _currentMoveSpeed += increase;
 
     public void StopMove() =>
         _currentMoveSpeed = 0;
+
+    public void MultiplySpeed(float multiplier) => 
+        _currentMoveSpeed *= multiplier;
+
+    public void ReduceSpeedByPercent(float percent)
+    {
+        float multiplier = 1f - percent;
+        _currentMoveSpeed *= multiplier;
+    }
 
     private void OnMoveEnvironment()
     {
