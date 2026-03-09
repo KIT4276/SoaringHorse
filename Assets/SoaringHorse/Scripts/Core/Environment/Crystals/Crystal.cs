@@ -19,13 +19,16 @@ public class Crystal : BaseRecyclable
         _dirty = false;
     }
 
-    public  void Damage()
+    public bool TryDamage()
     {
         if (!_dirty)
         {
             _liveSystem.SubtractLives(_value);
             _dirty = true;
+            return true;
         }
+        else
+            return false;
     }
 
     public class Factory : PlaceholderFactory<Vector3, Crystal> { }

@@ -6,7 +6,7 @@ public class CrystalTrigger : MonoBehaviour
 {
     [SerializeField] private Collider2D _collider;
     [SerializeField] private Crystal _crystal;
-    
+    [SerializeField] private ParticleSystem _effect;
 
     private void Awake()
     {
@@ -18,9 +18,13 @@ public class CrystalTrigger : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.TryGetComponent<HeroMove>(out var hero))
+        if (collision.gameObject.TryGetComponent<HeroAnimator>(out var hero))
         {
-            _crystal.Damage();
+            if (_crystal.TryDamage())
+            {
+                Vector2 hitPoint = _collider.ClosestPoint(collision.transform.position);
+                hero.PlayDamage(hitPoint);
+            }
         }
     }
 }
