@@ -7,4 +7,6 @@ public interface IPauseService
 
     void RequestPause();
     void RequestResume();
+    void ResetState();
+    void TogglePause();
 }

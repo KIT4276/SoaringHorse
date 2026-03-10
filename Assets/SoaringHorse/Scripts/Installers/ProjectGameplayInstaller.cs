@@ -36,7 +36,7 @@ public class ProjectGameplayInstaller : MonoInstaller
 
     private void BindSystems()
     {
-        Container.Bind<LiveSystem>()
+        Container.BindInterfacesAndSelfTo<LiveSystem>()
             .AsSingle();
         Container.BindInterfacesAndSelfTo<ExperienceSystem>()
             .AsSingle();

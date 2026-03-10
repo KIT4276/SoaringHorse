@@ -16,6 +16,8 @@ public class GameUI : MonoBehaviour, IInitializable, ILateDisposable
     [SerializeField] private Button _exitButton;
     [SerializeField] private Button _reduceSpeedButton;
     [SerializeField] private Button _startAgainButton;
+    [SerializeField] private Button _givLifeButton;
+    [SerializeField] private TMP_Text _finalScore;
 
     private PauseMenu _pauseMenu;
     private LiveSystem _liveSystem;
@@ -40,6 +42,7 @@ public class GameUI : MonoBehaviour, IInitializable, ILateDisposable
     {
         _liveSystem.ValueIncreased += OnLifeIncreased;
         _liveSystem.ValueDecreased += OnLifeDecreased;
+        _liveSystem.Death += OnDeath;
         _experienceSystem.ChangeValue += OnExpChange;
         _scoreSystem.ChangeValue += OnScoreChange;
         _scoreSystem.ChangeIntegerValue += OnIntScoreChange;
@@ -53,12 +56,14 @@ public class GameUI : MonoBehaviour, IInitializable, ILateDisposable
         _exitButton.onClick.AddListener(Exit);
         _reduceSpeedButton.onClick.AddListener(ShowRewarded);
         _startAgainButton.onClick.AddListener(StartAgain);
+        _givLifeButton.onClick.AddListener(GiveLife);
     }
 
     public void LateDispose()
     {
         _liveSystem.ValueIncreased -= OnLifeIncreased;
         _liveSystem.ValueDecreased -= OnLifeDecreased;
+        _liveSystem.Death -= OnDeath;
         _experienceSystem.ChangeValue -= OnExpChange;
         _scoreSystem.ChangeValue -= OnScoreChange;
         _scoreSystem.ChangeIntegerValue -= OnIntScoreChange;
@@ -69,6 +74,15 @@ public class GameUI : MonoBehaviour, IInitializable, ILateDisposable
         _exitButton.onClick.RemoveListener(Exit);
         _reduceSpeedButton.onClick.RemoveListener(ShowRewarded);
         _startAgainButton.onClick.RemoveListener(StartAgain);
+        _givLifeButton.onClick.RemoveListener(GiveLife);
+    }
+
+    private void OnDeath()
+    {
+        _pauseService.RequestPause();
+        _reduceSpeedButton.gameObject.SetActive(false);
+        _finalScore. gameObject.SetActive(true);
+        _finalScore.text =$"Ñ÷¸ò { _scoreSystem.Score:F0}";
     }
 
     private void OnIntScoreChange()
@@ -91,8 +105,11 @@ public class GameUI : MonoBehaviour, IInitializable, ILateDisposable
     private void StartAgain() =>
         _pauseMenu.StartAgain();
 
+    private void GiveLife() =>
+        _pauseMenu.ShowRewardedForLifes();
+
     private void ShowRewarded() =>
-        _pauseMenu.ShowRewarded();
+        _pauseMenu.ShowRewardedForReduseSpeed();
 
     private void Exit() =>
         _pauseMenu.Exit();
@@ -106,12 +123,14 @@ public class GameUI : MonoBehaviour, IInitializable, ILateDisposable
     private void OnPause()
     {
         _pausePanel.SetActive(true);
+        _finalScore.gameObject.SetActive(false);
+        _reduceSpeedButton.gameObject.SetActive(true);
         _playPanel.SetActive(false);
     }
 
     public void OnEscPressed()
     {
-        _pauseService.RequestPause();
+        _pauseService.TogglePause();
     }
 
     private void OnLifeChange(int value) => 

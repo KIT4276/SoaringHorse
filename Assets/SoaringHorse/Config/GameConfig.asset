@@ -16,7 +16,8 @@ MonoBehaviour:
   _experienceIncrease: 0.005
   _timeExperienceIncrease: 4
   heroUpForce: 3
-  maxLifes: 10
+  maxLifes: 15
+  _invulnerabilityTime: 1
   environmentMoveSpeed: 4
   environmentMoveIncrease: 0.2
   spawnMargin: 10

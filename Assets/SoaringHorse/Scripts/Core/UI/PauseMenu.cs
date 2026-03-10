@@ -4,12 +4,12 @@ using Zenject;
 public class PauseMenu 
 {
     private StartMenuController _startMenuController;
-    private IRewardedSlowdownService _rewardedSlowdownService;
+    private IRewardedService _rewardedSlowdownService;
 
     [Inject]
     public void Construct(
        StartMenuController startMenuController,
-       IRewardedSlowdownService rewardedSlowdownService)
+       IRewardedService rewardedSlowdownService)
     {
         _startMenuController = startMenuController;
         _rewardedSlowdownService = rewardedSlowdownService;
@@ -18,10 +18,11 @@ public class PauseMenu
     public void StartAgain() => 
         _startMenuController.StartNewGame();
 
-    public void ShowRewarded()
-    {
+    public void ShowRewardedForReduseSpeed() => 
         _rewardedSlowdownService.TryReduceSpeed();
-    }
+
+    public void ShowRewardedForLifes() =>
+        _rewardedSlowdownService.TryGiveLifes();
 
     public void Exit() => 
         Application.Quit();

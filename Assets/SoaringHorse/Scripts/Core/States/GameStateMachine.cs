@@ -10,6 +10,8 @@ public sealed class GameStateMachine : IGameStateMachine, IInitializable, ITicka
     private Type _currentType;
     private Type _beforePauseType;
 
+    public event Action<IGameState> ChangeState;
+
     public GameStateMachine(DiContainer container)
     {
         _container = container;
@@ -45,6 +47,7 @@ public sealed class GameStateMachine : IGameStateMachine, IInitializable, ITicka
         _currentType = type;
 
         _current.Enter();
+        ChangeState?.Invoke(_current);
        // Debug.Log("Enter " + _current);
     }
 
@@ -76,6 +79,7 @@ public sealed class GameStateMachine : IGameStateMachine, IInitializable, ITicka
         _currentType = type;
 
         _current.Enter();
-       // Debug.Log("EnterByType " + _current);
+        ChangeState?.Invoke(_current);
+         //Debug.Log("EnterByType " + _current);
     }
 }

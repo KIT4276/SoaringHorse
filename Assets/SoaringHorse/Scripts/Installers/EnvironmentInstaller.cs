@@ -29,8 +29,8 @@ public class EnvironmentInstaller : MonoInstaller
                     .FromComponentInNewPrefab(_environmentPrefab)
                     .AsSingle();
 
-        Container.Bind<IRewardedSlowdownService>()
-            .To<RewardedSlowdownService>()
+        Container.Bind<IRewardedService>()
+            .To<RewardedService>()
             .AsSingle();
     }
 

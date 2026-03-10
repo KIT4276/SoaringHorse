@@ -10,6 +10,7 @@ public class GameConfig : ScriptableObject
     [Header("Hero")]
     [SerializeField] private float heroUpForce = 3;
     [SerializeField] private int maxLifes = 10;
+    [SerializeField] private float _invulnerabilityTime = 3;
 
     [Header("Environment")]
     [SerializeField] private float environmentMoveSpeed = 1;
@@ -41,6 +42,7 @@ public class GameConfig : ScriptableObject
 
     //Hero
     public float HeroUpForce { get => heroUpForce; }
+    public float InvulnerabilityTime { get => _invulnerabilityTime; }
 
     //Environment
     public float EnvironmentMoveSpeed { get => environmentMoveSpeed; }
@@ -64,5 +66,5 @@ public class GameConfig : ScriptableObject
     public float MinBonusY { get => _minBonusY; }
     public float MaxBonusY { get => _maxBonusY; }
     public float BonusSpacing { get => _bonusSpacing; }
-
+   
 }
