@@ -17,6 +17,7 @@ public class GameUI : MonoBehaviour, IInitializable, ILateDisposable
     [SerializeField] private Button _reduceSpeedButton;
     [SerializeField] private Button _startAgainButton;
     [SerializeField] private Button _givLifeButton;
+    [SerializeField] private Button _escButton;
     [SerializeField] private TMP_Text _finalScore;
 
     private PauseMenu _pauseMenu;
@@ -82,6 +83,7 @@ public class GameUI : MonoBehaviour, IInitializable, ILateDisposable
         _pauseService.RequestPause();
         _reduceSpeedButton.gameObject.SetActive(false);
         _finalScore. gameObject.SetActive(true);
+        _escButton.gameObject.SetActive(false);
         _finalScore.text =$"Ñ÷¸ò { _scoreSystem.Score:F0}";
     }
 
@@ -126,6 +128,7 @@ public class GameUI : MonoBehaviour, IInitializable, ILateDisposable
         _pausePanel.SetActive(true);
         _finalScore.gameObject.SetActive(false);
         _reduceSpeedButton.gameObject.SetActive(true);
+        _escButton.gameObject.SetActive(true);
         _playPanel.SetActive(false);
     }
 

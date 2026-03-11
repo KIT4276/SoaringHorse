@@ -1,10 +1,9 @@
 using System;
-using UnityEngine;
 using Zenject;
 
 public sealed class GameStateMachine : IGameStateMachine, IInitializable, ITickable, IDisposable
 {
-    private readonly DiContainer _container;
+    private readonly IGameStateFactory _stateFactory;
 
     private IGameState _current;
     private Type _currentType;
@@ -12,20 +11,16 @@ public sealed class GameStateMachine : IGameStateMachine, IInitializable, ITicka
 
     public event Action<IGameState> ChangeState;
 
-    public GameStateMachine(DiContainer container)
-    {
-        _container = container;
-    }
+    public GameStateMachine(IGameStateFactory stateFactory) => 
+        _stateFactory = stateFactory;
 
-    public void Initialize()
-    {
+    public void Initialize() => 
         Enter<BootstrapState>();
-    }
 
     public void Tick()
     {
-        if (_current is ITickableState t)
-            t.Tick();
+        if (_current is ITickableState tickableState)
+            tickableState.Tick();
     }
 
     public void Dispose()
@@ -38,48 +33,39 @@ public sealed class GameStateMachine : IGameStateMachine, IInitializable, ITicka
 
     public void Enter<TState>() where TState : class, IGameState
     {
-        var type = typeof(TState);
-        if (_currentType == type) return;
-
-        _current?.Exit();
-
-        _current = _container.Resolve<TState>();
-        _currentType = type;
-
-        _current.Enter();
-        ChangeState?.Invoke(_current);
-       // Debug.Log("Enter " + _current);
+        ChangeStateTo(typeof(TState));
     }
 
     public void Pause()
     {
-        if (_currentType == typeof(PauseState)) return;
+        if (_currentType == typeof(PauseState))
+            return;
 
         _beforePauseType = _currentType;
-        Enter<PauseState>();
+        ChangeStateTo(typeof(PauseState));
     }
 
     public void Resume()
     {
-        if (_currentType != typeof(PauseState)) return;
+        if (_currentType != typeof(PauseState))
+            return;
 
-        var back = _beforePauseType ?? typeof(GameplayState);
+        var backStateType = _beforePauseType ?? typeof(GameplayState);
         _beforePauseType = null;
-
-        EnterByType(back);
+        ChangeStateTo(backStateType);
     }
 
-    private void EnterByType(Type type)
+    private void ChangeStateTo(Type stateType)
     {
-        if (_currentType == type) return;
+        if (_currentType == stateType)
+            return;
 
         _current?.Exit();
 
-        _current = (IGameState)_container.Resolve(type);
-        _currentType = type;
+        _current = _stateFactory.Get(stateType);
+        _currentType = stateType;
 
         _current.Enter();
         ChangeState?.Invoke(_current);
-         //Debug.Log("EnterByType " + _current);
     }
 }

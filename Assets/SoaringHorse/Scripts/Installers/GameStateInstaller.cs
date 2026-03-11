@@ -10,8 +10,14 @@ public class GameStateInstaller : MonoInstaller
         Container.Bind<GameplayState>().AsSingle();
         Container.Bind<PauseState>().AsSingle();
 
+        Container.Bind<IGameStateFactory>()
+            .To<GameStateFactory>()
+            .AsSingle();
         Container.BindInterfacesAndSelfTo<GameStateMachine>()
             .AsSingle()
             .NonLazy();
+        //Container.Bind<IGameStateMachine>()
+        //    .To<GameStateMachine>()
+        //    .FromResolve();
     }
 }

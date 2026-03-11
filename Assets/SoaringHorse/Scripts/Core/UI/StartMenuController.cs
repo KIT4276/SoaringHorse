@@ -8,7 +8,8 @@ public class StartMenuController
 
     public bool HasSave() => _save.TryLoadLocal(out _);
 
-    public StartMenuController(ISaveService save, IPlayerProgress progress, IGameStateMachine sm, LiveSystem liveSystem, IPauseService pauseService)
+    public StartMenuController(ISaveService save, IPlayerProgress progress, IGameStateMachine sm, 
+        LiveSystem liveSystem, IPauseService pauseService)
     {
         _save = save;
         _progress = progress;

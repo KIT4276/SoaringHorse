@@ -1703,6 +1703,7 @@ MonoBehaviour:
   _reduceSpeedButton: {fileID: 5253667326338227789}
   _startAgainButton: {fileID: 6072115855924454259}
   _givLifeButton: {fileID: 8144927114577516068}
+  _escButton: {fileID: 1534892843783237861}
   _finalScore: {fileID: 2002622621838352499}
 --- !u!114 &5663447606250647811
 MonoBehaviour:
