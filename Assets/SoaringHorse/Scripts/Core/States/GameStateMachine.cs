@@ -1,4 +1,5 @@
 using System;
+using UnityEngine;
 using Zenject;
 
 public sealed class GameStateMachine : IGameStateMachine, IInitializable, ITickable, IDisposable
@@ -40,7 +41,6 @@ public sealed class GameStateMachine : IGameStateMachine, IInitializable, ITicka
     {
         if (_currentType == typeof(PauseState))
             return;
-
         _beforePauseType = _currentType;
         ChangeStateTo(typeof(PauseState));
     }

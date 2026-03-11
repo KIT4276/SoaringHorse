@@ -1,4 +1,5 @@
 using System;
+using UnityEngine;
 
 public sealed class PauseService : IPauseService
 {
@@ -9,7 +10,6 @@ public sealed class PauseService : IPauseService
 
     public void RequestPause()
     {
-
         if (_paused)
             return;
 

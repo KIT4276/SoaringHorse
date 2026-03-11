@@ -1,3 +1,5 @@
+using UnityEngine;
+
 public sealed class BootstrapState : IGameState
 {
     private readonly ApplicationStarter _applicationStarter;
@@ -7,6 +9,8 @@ public sealed class BootstrapState : IGameState
 
     public void Enter()
     {
+        Debug.Log("[BootstrapState] Enter");
+        
         _applicationStarter.InitYandex();
         _applicationStarter.InitStartUI();
     }

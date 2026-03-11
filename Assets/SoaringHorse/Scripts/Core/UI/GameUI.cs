@@ -44,9 +44,11 @@ public class GameUI : MonoBehaviour, IInitializable, ILateDisposable
         _liveSystem.ValueIncreased += OnLifeIncreased;
         _liveSystem.ValueDecreased += OnLifeDecreased;
         _liveSystem.Death += OnDeath;
+
         _experienceSystem.ChangeValue += OnExpChange;
         _scoreSystem.ChangeValue += OnScoreChange;
         _scoreSystem.ChangeIntegerValue += OnIntScoreChange;
+
         _inputManager.EscPressed += OnEscPressed;
         _pauseService.PauseRequested += OnPause;
         _pauseService.ResumeRequested += OnResume;
@@ -58,6 +60,12 @@ public class GameUI : MonoBehaviour, IInitializable, ILateDisposable
         _reduceSpeedButton.onClick.AddListener(ShowRewarded);
         _startAgainButton.onClick.AddListener(StartAgain);
         _givLifeButton.onClick.AddListener(GiveLife);
+
+
+        OnLifeChange(_liveSystem.CurrentLives);
+        OnExpChange(_experienceSystem.Exp);
+        OnScoreChange(_scoreSystem.Score);
+
     }
 
     public void LateDispose()

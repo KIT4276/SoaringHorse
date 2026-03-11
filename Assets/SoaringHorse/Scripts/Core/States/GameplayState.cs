@@ -22,5 +22,6 @@ public sealed class GameplayState : IGameState
         _pause.PauseRequested -= OnPauseRequested;
     }
 
-    private void OnPauseRequested() => _sm.Pause();
+    private void OnPauseRequested() => 
+        _sm.Pause();
 }

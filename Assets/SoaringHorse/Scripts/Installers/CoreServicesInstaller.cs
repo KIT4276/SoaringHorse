@@ -14,7 +14,7 @@ public class CoreServicesInstaller : MonoInstaller
 
         Container.BindInterfacesTo<ProgressAutosave>().AsSingle();
 
-        Container.Bind<ISceneLoader>().To<SceneLoader>().AsSingle();
+        Container.BindInterfacesTo<SceneLoader>().AsSingle();
 
         Container.Bind<ApplicationStarter>().AsSingle();
 
