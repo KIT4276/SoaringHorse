@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: EnvironmentConfig
   m_EditorClassIdentifier: Assembly-CSharp::EnvironmentConfig
   _environmentMoveSpeed: 4
-  _environmentMoveIncrease: 0.15
+  _environmentMoveIncrease: 0.1
   _spawnMargin: 7
   _despawnMargin: 7

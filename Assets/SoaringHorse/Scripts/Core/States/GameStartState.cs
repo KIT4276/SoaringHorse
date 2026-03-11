@@ -1,36 +1,17 @@
-using UnityEngine;
-
 public sealed class GameStartState : IGameState
 {
     private readonly IGameStateMachine _sm;
-    private readonly ISaveService _save;
-    private readonly IPlayerProgress _progress;
-    private readonly IYandexService _yandex;
-    private readonly LiveSystem _liveSystem;
-    private ExperienceSystem _experienceSystem;
-    private readonly ScoreSystem _scoreSystem;
+    private readonly GameSessionStarter _sessionStarter;
 
-    public GameStartState(IGameStateMachine sm, ISaveService save, IPlayerProgress progress, IYandexService yandex, 
-        LiveSystem liveSystem, ExperienceSystem experienceSystem, ScoreSystem scoreSystem)
+    public GameStartState(IGameStateMachine sm, GameSessionStarter gameSessionStarter)
     {
         _sm = sm;
-        _save = save;
-        _progress = progress;
-        _yandex = yandex;
-        _liveSystem = liveSystem;
-        _experienceSystem = experienceSystem;
-        _scoreSystem = scoreSystem;
+        _sessionStarter = gameSessionStarter;
     }
 
     public void Enter()
     {
-        _yandex.ReadyOnce();
-        _save.Data.ApplyTo(_progress);
-        _liveSystem.LoadFromProgress();
-        _experienceSystem.Initialize();
-        _scoreSystem.Initialize();
-
-        Time.timeScale = 1f;
+        _sessionStarter.StartFromLoadedProgress();
         _sm.Enter<GameplayState>();
     }
 
