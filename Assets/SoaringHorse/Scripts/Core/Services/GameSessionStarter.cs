@@ -25,6 +25,7 @@ public sealed class GameSessionStarter
         _scoreSystem = scoreSystem;
     }
 
+
     public void StartFromLoadedProgress()
     {
         _yandex.ReadyOnce();

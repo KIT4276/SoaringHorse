@@ -16,7 +16,10 @@ public class CoreServicesInstaller : MonoInstaller
 
         Container.Bind<ISceneLoader>().To<SceneLoader>().AsSingle();
 
+        Container.Bind<ApplicationStarter>().AsSingle();
+
         Container.Bind<GameSessionStarter>().AsSingle();
+
     }
 }
     
