@@ -8,7 +8,6 @@ public class HeroMove : MonoBehaviour
     private InputManager _inputManager;
     private HeroConfig _gameConfig;
 
-    private bool _canMove;
     private bool _started;
 
     [Inject]
@@ -20,7 +19,7 @@ public class HeroMove : MonoBehaviour
 
     private void OnEnable()
     {
-        _canMove = true; //temporary
+        transform.position = Vector3.zero;
         _started = false;
         _rigidbody.simulated = false;
         _rigidbody.linearVelocity = Vector2.zero;
@@ -28,27 +27,11 @@ public class HeroMove : MonoBehaviour
         _inputManager.UpPressed += OnUpPressed;
     }
 
-    private void OnDisable()
-    {
+    private void OnDisable() => 
         _inputManager.UpPressed -= OnUpPressed;
-    }
-
-    private void Update()
-    {
-        if (!_canMove)
-        {
-            if (transform.position != Vector3.zero)
-                transform.position = Vector3.zero;
-
-            _rigidbody.simulated = false;
-            return;
-        }
-    }
 
     private void OnUpPressed()
     {
-        if (!_canMove) return;
-
         if (!_started)
         {
             _started = true;

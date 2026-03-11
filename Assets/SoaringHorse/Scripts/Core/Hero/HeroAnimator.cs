@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 using Zenject;
 
@@ -13,14 +12,13 @@ public class HeroAnimator : MonoBehaviour
     private InputManager _inputManager;
 
     [Inject]
-    public void Constrtuct(InputManager inputManager)
-    {
+    public void Construct(InputManager inputManager) => 
         _inputManager = inputManager;
-    }
 
     private void OnEnable()
     {
-        _inputManager.UpPressed += OnUpPressed;
+        if (_inputManager != null)
+            _inputManager.UpPressed += OnUpPressed;
     }
 
     public void PlayDamage(Vector2 contact)

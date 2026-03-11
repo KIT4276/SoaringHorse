@@ -1,4 +1,4 @@
-public sealed class LoadSceneState : IGameState, ITickableState
+public sealed class LoadSceneState : IGameState
 {
     private readonly IGameStateMachine _sm;
     private readonly ISceneLoader _loader;
@@ -9,16 +9,18 @@ public sealed class LoadSceneState : IGameState, ITickableState
     {
         _sm = sm;
         _loader = loader;
-        _sceneName = config.GameSceneName; 
+        _sceneName = config.GameSceneName;
     }
 
-    public void Enter() => _loader.Load(_sceneName);
-
-    public void Tick()
+    public void Enter()
     {
-        if (_loader.IsDone)
-            _sm.Enter<GameStartState>();
+        _loader.Done += LoadIsDone;
+        _loader.Load(_sceneName);
     }
+    public void Exit() => 
+        _loader.Done -= LoadIsDone;
 
-    public void Exit() { }
+
+    private void LoadIsDone() => 
+        _sm.Enter<GameStartState>();
 }

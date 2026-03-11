@@ -1,5 +1,8 @@
+using System;
+
 public interface ISceneLoader
 {
     void Load(string sceneName);
-    bool IsDone { get; }
+
+    event Action Done;
 }
