@@ -6,13 +6,13 @@ public class HeroMove : MonoBehaviour
     [SerializeField] private Rigidbody2D _rigidbody;
 
     private InputManager _inputManager;
-    private GameConfig _gameConfig;
+    private HeroConfig _gameConfig;
 
     private bool _canMove;
     private bool _started;
 
     [Inject]
-    private void Construct(GameConfig gameConfig, InputManager inputManager)
+    private void Construct(HeroConfig gameConfig, InputManager inputManager)
     {
         _gameConfig = gameConfig;
         _inputManager = inputManager;

@@ -4,11 +4,11 @@ public class StartMenuController
     private readonly IPlayerProgress _progress;
     private readonly IGameStateMachine _sm;
     private readonly LiveSystem _liveSystem;
-     private readonly IPauseService _pauseService;
+    private readonly IPauseService _pauseService;
 
     public bool HasSave() => _save.TryLoadLocal(out _);
 
-    public StartMenuController(ISaveService save, IPlayerProgress progress, IGameStateMachine sm, LiveSystem liveSystem,  IPauseService pauseService)
+    public StartMenuController(ISaveService save, IPlayerProgress progress, IGameStateMachine sm, LiveSystem liveSystem, IPauseService pauseService)
     {
         _save = save;
         _progress = progress;
@@ -31,10 +31,9 @@ public class StartMenuController
         _save.ResetAllProgress(true);
         _progress.ApplyFromSave(_save.Data);
 
-        _liveSystem.StartNewGame(); 
+        _liveSystem.ResetForNewRun(_progress.Lifes);
         _sm.Enter<LoadSceneState>();
     }
-
 
     private void OnLoaded()
     {

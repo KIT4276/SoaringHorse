@@ -26,7 +26,7 @@ public sealed class GameStartState : IGameState
     {
         _yandex.ReadyOnce();
         _save.Data.ApplyTo(_progress);
-        _liveSystem.Initialize();
+        _liveSystem.LoadFromProgress();
         _experienceSystem.Initialize();
         _scoreSystem.Initialize();
 

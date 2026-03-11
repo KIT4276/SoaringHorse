@@ -14,7 +14,7 @@ public class ExperienceSystem : ITickable
 
     public event Action<float> ChangeValue;
 
-    public ExperienceSystem(IPlayerProgress progress, GameConfig config)
+    public ExperienceSystem(IPlayerProgress progress, ProgressionConfig config)
     {
         _progress = progress;
         _experienceIncrease = config.ExperienceIncrease;

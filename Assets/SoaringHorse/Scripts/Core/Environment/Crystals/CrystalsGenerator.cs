@@ -6,16 +6,16 @@ public class CrystalsGenerator : BaseEnvironmentGenerator<CrystalsGenerator.Spaw
     private Crystal.Factory _factory;
 
     [Inject]
-    private void Construct(GameConfig gameConfig, Crystal.Factory crystalFactory)
+    private void Construct(EnvironmentConfig envConfig, ObstacleConfig obstacleConfig, Crystal.Factory crystalFactory)
     {
         _factory = crystalFactory;
 
-        InitCommon(gameConfig.SpawnEnvironmentMargin, gameConfig.DespawnEnvironmentMargin);
+        InitCommon(envConfig.SpawnEnvironmentMargin, envConfig.DespawnEnvironmentMargin);
         InitSpawnParams(
-            gameConfig.MinObstY,
-            gameConfig.MaxObstY,
-            gameConfig.FixedObstZ,
-            gameConfig.PairObstSpacing
+            obstacleConfig.MinObstacleY,
+            obstacleConfig.MaxObstacleY,
+            obstacleConfig.FixedObstZ,
+            obstacleConfig.PairObstSpacing
         );
     }
 

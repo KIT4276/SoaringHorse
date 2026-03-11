@@ -85,10 +85,11 @@ public class GameUI : MonoBehaviour, IInitializable, ILateDisposable
         _finalScore.text =$"Ñ÷¸ò { _scoreSystem.Score:F0}";
     }
 
-    private void OnIntScoreChange()
-    {
+    public void OnEscPressed() => 
+        _pauseService.TogglePause();
+
+    private void OnIntScoreChange() => 
         _gameUIAnimator.ScoreImageJuiceBump();
-    }
 
     private void OnLifeDecreased(int valueobj)
     {
@@ -128,21 +129,12 @@ public class GameUI : MonoBehaviour, IInitializable, ILateDisposable
         _playPanel.SetActive(false);
     }
 
-    public void OnEscPressed()
-    {
-        _pauseService.TogglePause();
-    }
-
     private void OnLifeChange(int value) => 
         _life.text = value.ToString();
 
-    private void OnExpChange(float value)
-    {
+    private void OnExpChange(float value) => 
         _exp.text = (value * 100).ToString("F0");
-    }
 
-    private void OnScoreChange(float value)
-    {
+    private void OnScoreChange(float value) => 
         _score.text = value.ToString("F0");
-    }
 }

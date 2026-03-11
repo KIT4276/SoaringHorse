@@ -13,12 +13,6 @@ public class Crystal : BaseRecyclable
     private void Construct(LiveSystem liveSystem)
         => _liveSystem = liveSystem;
 
-    protected override void Activate()
-    {
-        ActivateRandomSprite();
-        _dirty = false;
-    }
-
     public bool TryDamage()
     {
         if (!_dirty)
@@ -29,6 +23,12 @@ public class Crystal : BaseRecyclable
         }
         else
             return false;
+    }
+
+    protected override void Activate()
+    {
+        ActivateRandomSprite();
+        _dirty = false;
     }
 
     public class Factory : PlaceholderFactory<Vector3, Crystal> { }

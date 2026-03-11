@@ -2,10 +2,10 @@ using System;
 using UnityEngine;
 using Zenject;
 
-public class LiveSystem : ITickable
+public sealed class LiveSystem : ITickable
 {
     private readonly IPlayerProgress _progress;
-    private readonly int _maxLifes;
+    private readonly int _maxLives;
     private readonly float _invulnerabilityTime;
 
     private float _invulnerabilityRemaining;
@@ -19,22 +19,11 @@ public class LiveSystem : ITickable
     public event Action<int> ValueDecreased;
     public event Action Death;
 
-    public LiveSystem(IPlayerProgress progress, GameConfig config)
+    public LiveSystem(IPlayerProgress progress, HeroConfig config)
     {
         _progress = progress;
-        _maxLifes = config.MaxLifes;
+        _maxLives = config.MaxLives; 
         _invulnerabilityTime = config.InvulnerabilityTime;
-    }
-
-    public void Initialize()
-    {
-        CurrentLives = Mathf.Clamp(_progress.Lifes, 0, _maxLifes);
-        _progress.SetLifes(CurrentLives);
-
-        _invulnerabilityRemaining = 0f;
-        _isDead = CurrentLives <= 0;
-
-        ValueIncreased?.Invoke(CurrentLives);
     }
 
     public void Tick()
@@ -48,37 +37,52 @@ public class LiveSystem : ITickable
             _invulnerabilityRemaining = 0f;
     }
 
-    public void StartNewGame(int startLives)
+    /// <summary>
+    /// Загружает жизни из сохранённого прогресса.
+    /// Использовать при входе в игровую сессию из save.
+    /// </summary>
+    public void LoadFromProgress()
     {
-        CurrentLives = Mathf.Clamp(startLives, 0, _maxLifes);
-        _progress.SetLifes(CurrentLives);
-
-        _invulnerabilityRemaining = 0f;
-        _isDead = false;
-
+        SetLivesInternal(_progress.Lifes, resetInvulnerability: true);
+        _isDead = CurrentLives <= 0;
         ValueIncreased?.Invoke(CurrentLives);
+    }
+
+    /// <summary>
+    /// Полный сброс состояния для нового рана/рестарта.
+    /// Использовать при старте новой игры или рестарте после смерти.
+    /// </summary>
+    public void ResetForNewRun(int startLives)
+    {
+        SetLivesInternal(startLives, resetInvulnerability: true);
+        _isDead = CurrentLives <= 0;
+        ValueIncreased?.Invoke(CurrentLives);
+
+        if (_isDead)
+            Death?.Invoke();
     }
 
     public void Revive(int livesToAdd)
     {
-        CurrentLives = Mathf.Clamp(CurrentLives + livesToAdd, 0, _maxLifes);
-        _progress.SetLifes(CurrentLives);
+        if (livesToAdd <= 0)
+            return;
 
+        SetLivesInternal(CurrentLives + livesToAdd, resetInvulnerability: false);
         _isDead = false;
         StartInvulnerability(_invulnerabilityTime);
-
         ValueIncreased?.Invoke(CurrentLives);
     }
 
     public void AddLives(int value)
     {
-        if (value <= 0)
+        if (value <= 0 || _isDead)
             return;
 
-        CurrentLives = Mathf.Clamp(CurrentLives + value, 0, _maxLifes);
-        _progress.SetLifes(CurrentLives);
+        int oldLives = CurrentLives;
+        SetLivesInternal(CurrentLives + value, resetInvulnerability: false);
 
-        ValueIncreased?.Invoke(CurrentLives);
+        if (CurrentLives != oldLives)
+            ValueIncreased?.Invoke(CurrentLives);
     }
 
     public void SubtractLives(int value)
@@ -86,28 +90,24 @@ public class LiveSystem : ITickable
         if (value <= 0)
             return;
 
-        if (_isDead)
+        if (_isDead || IsInvulnerable)
             return;
 
-        if (IsInvulnerable)
-            return;
+        int oldLives = CurrentLives;
+        SetLivesInternal(CurrentLives - value, resetInvulnerability: false);
 
-        CurrentLives -= value;
+        if (CurrentLives == oldLives)
+            return;
 
         if (CurrentLives <= 0)
         {
-            CurrentLives = 0;
-            _progress.SetLifes(CurrentLives);
-
-            _invulnerabilityRemaining = 0f;
             _isDead = true;
-
-            ValueDecreased?.Invoke(CurrentLives);
+            _invulnerabilityRemaining = 0f;
+            ValueDecreased?.Invoke(CurrentLives);  
             Death?.Invoke();
             return;
         }
 
-        _progress.SetLifes(CurrentLives);
         StartInvulnerability(_invulnerabilityTime);
         ValueDecreased?.Invoke(CurrentLives);
     }
@@ -125,15 +125,12 @@ public class LiveSystem : ITickable
         _invulnerabilityRemaining = 0f;
     }
 
-    public void StartNewGame()
+    private void SetLivesInternal(int lives, bool resetInvulnerability)
     {
-        CurrentLives = Mathf.Clamp(_progress.Lifes, 0, _maxLifes);
+        CurrentLives = Mathf.Clamp(lives, 0, _maxLives);
         _progress.SetLifes(CurrentLives);
 
-        _invulnerabilityRemaining = 0f;
-        _isDead = false;
-
-        ValueIncreased?.Invoke(CurrentLives);
+        if (resetInvulnerability)
+            _invulnerabilityRemaining = 0f;
     }
 }
-

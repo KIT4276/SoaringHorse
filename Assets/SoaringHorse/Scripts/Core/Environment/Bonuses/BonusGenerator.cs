@@ -16,20 +16,20 @@ public class BonusGenerator : BaseEnvironmentGenerator<Bonus>
     private Bonus.Factory _factory;
 
     [Inject]
-    private void Construct(GameConfig gameConfig, Bonus.Factory bonusFactory)
+    private void Construct(EnvironmentConfig envConfig, BonusConfig bonusConfig, Bonus.Factory bonusFactory)
     {
         _factory = bonusFactory;
 
         // маргины те же, что и для кристаллов
-        InitCommon(gameConfig.SpawnEnvironmentMargin, gameConfig.DespawnEnvironmentMargin);
+        InitCommon(envConfig.SpawnEnvironmentMargin, envConfig.DespawnEnvironmentMargin);
 
         // Переименуй поля под свой GameConfig (ниже — ожидаемые имена)
         // Для 2D фиксированный Z обычно 0 (можешь взять из конфига, если нужно для sorting)
         InitSpawnParams(
-            gameConfig.MinBonusY,      // minY для бонусов
-            gameConfig.MaxBonusY,      // maxY для бонусов
-            0f,                        // fixedZ (2D)
-            gameConfig.BonusSpacing   // шаг по X для бонусов (чтобы не спавнить слишком часто)
+            bonusConfig.MinBonusY,      // minY для бонусов
+            bonusConfig.MaxBonusY,      // maxY для бонусов
+            0f,                        // _fixedZ (2D)
+            bonusConfig.BonusSpacing   // шаг по X для бонусов (чтобы не спавнить слишком часто)
         );
     }
 

@@ -6,17 +6,17 @@ public class CloudsGenerator : BaseEnvironmentGenerator<Cloud>
     private Cloud.Factory _factory;
 
     [Inject]
-    private void Construct(GameConfig gameConfig, Cloud.Factory cloudFactory)
+    private void Construct(EnvironmentConfig envConfig, CloudConfig cloudConfig, Cloud.Factory cloudFactory)
     {
         _factory = cloudFactory;
 
-        InitCommon(gameConfig.SpawnEnvironmentMargin, gameConfig.DespawnEnvironmentMargin);
+        InitCommon(envConfig.SpawnEnvironmentMargin, envConfig.DespawnEnvironmentMargin);
 
         InitSpawnParams(
-            gameConfig.MinCloudY,
-            gameConfig.MaxCloudY,
-            gameConfig.FixedCloudZ,
-            gameConfig.CloudSpacing
+            cloudConfig.MinCloudY,
+            cloudConfig.MaxCloudY,
+            cloudConfig.FixedCloudZ,
+            cloudConfig.CloudSpacing
         );
     }
 

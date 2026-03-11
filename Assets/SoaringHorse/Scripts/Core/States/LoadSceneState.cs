@@ -5,7 +5,7 @@ public sealed class LoadSceneState : IGameState, ITickableState
 
     private readonly string _sceneName;
 
-    public LoadSceneState(IGameStateMachine sm, ISceneLoader loader, GameConfig config)
+    public LoadSceneState(IGameStateMachine sm, ISceneLoader loader, SceneConfig config)
     {
         _sm = sm;
         _loader = loader;

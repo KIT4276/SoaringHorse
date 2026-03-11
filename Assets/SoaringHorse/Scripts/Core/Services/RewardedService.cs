@@ -1,5 +1,3 @@
-using System;
-
 public sealed class RewardedService : IRewardedService
 {
     private readonly IYandexService _yandex;

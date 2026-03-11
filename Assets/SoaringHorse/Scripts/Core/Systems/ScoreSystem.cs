@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-public class ScoreSystem
+public class ScoreSystem : IDisposable
 {
     private readonly IPlayerProgress _progress;
     private readonly ExperienceSystem _experienceSystem;
@@ -30,6 +30,12 @@ public class ScoreSystem
         _experienceSystem.ChangeValue += OnExpChanged;
     }
 
+
+    public void Dispose()
+    {
+        _experienceSystem.ChangeValue -= OnExpChanged;
+    }
+
     public void ChangeScore(float value)
     {
         _prevInteger = Mathf.FloorToInt(Score);
@@ -46,4 +52,5 @@ public class ScoreSystem
 
     private void OnExpChanged(float exp) => 
         ChangeScore(exp);
+
 }

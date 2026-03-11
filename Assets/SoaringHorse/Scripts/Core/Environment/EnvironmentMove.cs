@@ -11,7 +11,7 @@ public class EnvironmentMove : MonoBehaviour
     public float MoveSpeed => _currentMoveSpeed;
 
     [Inject]
-    private void Construct(GameConfig gameConfig, ExperienceSystem experienceSystem)
+    private void Construct(EnvironmentConfig gameConfig, ExperienceSystem experienceSystem)
     {
         _startMoveSpeed = gameConfig.EnvironmentMoveSpeed;
         _currentMoveSpeed = _startMoveSpeed;
