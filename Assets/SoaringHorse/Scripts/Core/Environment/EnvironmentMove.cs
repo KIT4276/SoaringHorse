@@ -4,7 +4,7 @@ using Zenject;
 public class EnvironmentMove : MonoBehaviour
 {
     private float _startMoveSpeed;
-    [SerializeField]private float _currentMoveSpeed;
+   private float _currentMoveSpeed;
     private ExperienceSystem _experienceSystem;
     private Vector3 _moveVector = Vector3.zero;
 

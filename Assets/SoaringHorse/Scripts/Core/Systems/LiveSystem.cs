@@ -4,10 +4,9 @@ using Zenject;
 
 public sealed class LiveSystem : ITickable
 {
-    private readonly IPlayerProgress _progress;
     private readonly int _maxLives;
     private readonly float _invulnerabilityTime;
-
+    private readonly ProgressSyncService _progressSyncService;
     private float _invulnerabilityRemaining;
     private bool _isDead;
 
@@ -19,9 +18,9 @@ public sealed class LiveSystem : ITickable
     public event Action<int> ValueDecreased;
     public event Action Death;
 
-    public LiveSystem(IPlayerProgress progress, HeroConfig config)
+    public LiveSystem(ProgressSyncService progressSyncService, HeroConfig config)
     {
-        _progress = progress;
+        _progressSyncService = progressSyncService;
         _maxLives = config.MaxLives; 
         _invulnerabilityTime = config.InvulnerabilityTime;
     }
@@ -43,7 +42,7 @@ public sealed class LiveSystem : ITickable
     /// </summary>
     public void LoadFromProgress()
     {
-        SetLivesInternal(_progress.Lifes, resetInvulnerability: true);
+        SetLivesInternal(_progressSyncService.ResdLifes(), resetInvulnerability: true);
         _isDead = CurrentLives <= 0;
         ValueIncreased?.Invoke(CurrentLives);
     }
@@ -120,16 +119,13 @@ public sealed class LiveSystem : ITickable
         _invulnerabilityRemaining = duration;
     }
 
-    public void ResetInvulnerability()
-    {
+    public void ResetInvulnerability() => 
         _invulnerabilityRemaining = 0f;
-    }
 
     private void SetLivesInternal(int lives, bool resetInvulnerability)
     {
         CurrentLives = Mathf.Clamp(lives, 0, _maxLives);
-        _progress.SetLifes(CurrentLives);
-
+        _progressSyncService.SetLifes(CurrentLives);
         if (resetInvulnerability)
             _invulnerabilityRemaining = 0f;
     }

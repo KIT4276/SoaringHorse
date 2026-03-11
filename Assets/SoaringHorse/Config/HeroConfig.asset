@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 21002592e809ec84c8177b9554c18acd, type: 3}
   m_Name: HeroConfig
   m_EditorClassIdentifier: 
-  _heroUpForce: 3
+  _heroUpForce: 4
   _maxLives: 10
-  _invulnerabilityTime: 1
+  _invulnerabilityTime: 3
+  _gravity: 0.8

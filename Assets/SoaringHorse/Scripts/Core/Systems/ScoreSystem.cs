@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class ScoreSystem : IDisposable
 {
-    private readonly IPlayerProgress _progress;
+    private readonly ProgressSyncService _progressSyncService;
     private readonly ExperienceSystem _experienceSystem;
 
     private int _prevInteger;
@@ -14,9 +14,9 @@ public class ScoreSystem : IDisposable
     public event Action<float> ChangeValue;
     public event Action ChangeIntegerValue;
 
-    public ScoreSystem(IPlayerProgress progress, ExperienceSystem experienceSystem)
+    public ScoreSystem(ProgressSyncService progressSyncService, ExperienceSystem experienceSystem)
     {
-        _progress = progress;
+        _progressSyncService = progressSyncService;
         _experienceSystem = experienceSystem;
     }
 
@@ -24,24 +24,22 @@ public class ScoreSystem : IDisposable
     {
         _prevInteger = 0;
 
-        Score = _progress.Score;
+        Score = _progressSyncService.ReadScore();
         ChangeValue?.Invoke(Score);
 
         _experienceSystem.ChangeValue += OnExpChanged;
     }
 
 
-    public void Dispose()
-    {
+    public void Dispose() => 
         _experienceSystem.ChangeValue -= OnExpChanged;
-    }
 
     public void ChangeScore(float value)
     {
         _prevInteger = Mathf.FloorToInt(Score);
 
         Score += value;
-        _progress.AddScore(value);
+        _progressSyncService.SyncScore(value);
         ChangeValue?.Invoke(Score);
 
         _newInteger = Mathf.FloorToInt(Score);
@@ -52,5 +50,4 @@ public class ScoreSystem : IDisposable
 
     private void OnExpChanged(float exp) => 
         ChangeScore(exp);
-
 }

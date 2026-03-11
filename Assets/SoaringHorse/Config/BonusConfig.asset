@@ -9,9 +9,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 0}
+  m_Script: {fileID: 11500000, guid: 7eeec7c898b9d044398e6323433b4776, type: 3}
   m_Name: BonusConfig
-  m_EditorClassIdentifier: Assembly-CSharp::BonusConfig
+  m_EditorClassIdentifier: 
   _minBonusY: -3
   _maxBonusY: 3
-  _bonusSpacing: 12
+  _bonusSpacing: 10
+  _luckChance: 0.8

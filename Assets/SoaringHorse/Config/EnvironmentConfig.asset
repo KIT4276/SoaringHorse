@@ -9,10 +9,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 0}
+  m_Script: {fileID: 11500000, guid: 74fd9a06b7db5ac4e922b83fd5b1c405, type: 3}
   m_Name: EnvironmentConfig
-  m_EditorClassIdentifier: Assembly-CSharp::EnvironmentConfig
+  m_EditorClassIdentifier: 
   _environmentMoveSpeed: 4
-  _environmentMoveIncrease: 0.1
   _spawnMargin: 7
   _despawnMargin: 7

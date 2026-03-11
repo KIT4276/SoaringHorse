@@ -9,9 +9,7 @@ public class BonusGenerator : BaseEnvironmentGenerator<Bonus>
     [SerializeField] private float _checkRadius = 0.35f; // радиус проверки свободного места
     [SerializeField] private int _maxTries = 8;          // попыток подобрать Y без кристаллов
 
-    [Header("Bonus type")]
-    [Range(0f, 1f)]
-    [SerializeField] private float _luckChance = 0.5f;   // шанс luck (иначе life)
+    private float _luckChance = 0.5f;   // шанс luck (иначе life)
 
     private Bonus.Factory _factory;
 
@@ -19,17 +17,14 @@ public class BonusGenerator : BaseEnvironmentGenerator<Bonus>
     private void Construct(EnvironmentConfig envConfig, BonusConfig bonusConfig, Bonus.Factory bonusFactory)
     {
         _factory = bonusFactory;
+        _luckChance = bonusConfig.LuckChance;
+        InitCommon(envConfig.SpawnEnvironmentMargin/2, envConfig.DespawnEnvironmentMargin/2);
 
-        // маргины те же, что и для кристаллов
-        InitCommon(envConfig.SpawnEnvironmentMargin, envConfig.DespawnEnvironmentMargin);
-
-        // Переименуй поля под свой GameConfig (ниже — ожидаемые имена)
-        // Для 2D фиксированный Z обычно 0 (можешь взять из конфига, если нужно для sorting)
         InitSpawnParams(
-            bonusConfig.MinBonusY,      // minY для бонусов
-            bonusConfig.MaxBonusY,      // maxY для бонусов
-            0f,                        // _fixedZ (2D)
-            bonusConfig.BonusSpacing   // шаг по X для бонусов (чтобы не спавнить слишком часто)
+            bonusConfig.MinBonusY,     
+            bonusConfig.MaxBonusY,    
+            0f,                       
+            bonusConfig.BonusSpacing   
         );
     }
 
