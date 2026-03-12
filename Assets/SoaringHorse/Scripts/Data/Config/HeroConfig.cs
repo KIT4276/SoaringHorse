@@ -5,7 +5,7 @@ public class HeroConfig : ScriptableObject
 {
     [SerializeField] private float _heroUpForce = 4;
     [SerializeField] private int _maxLives = 10;
-    [SerializeField] private float _invulnerabilityTime = 3;
+    [SerializeField] private float _invulnerabilityTime = 1;
     [SerializeField] private float _gravity = 0.8f;
 
     public float HeroUpForce { get => _heroUpForce; }

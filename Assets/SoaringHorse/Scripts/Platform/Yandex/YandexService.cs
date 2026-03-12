@@ -136,5 +136,5 @@ public sealed class YandexService : IYandexService, IInitializable, IDisposable
     private void OnAdClosed(bool _) => _pause.RequestResume();
 
     private void OnRvOpened() => _pause.RequestPause();
-    private void OnRvClosed() => _pause.RequestResume();
+    private void OnRvClosed() { }
 }

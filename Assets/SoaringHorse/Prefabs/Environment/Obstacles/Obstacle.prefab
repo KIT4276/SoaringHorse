@@ -155,6 +155,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _collider: {fileID: 0}
   _crystal: {fileID: 6334791001117611578}
+  _effect: {fileID: 0}
 --- !u!1 &5075779734018344791
 GameObject:
   m_ObjectHideFlags: 0
@@ -317,6 +318,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _collider: {fileID: 0}
   _crystal: {fileID: 6334791001117611578}
+  _effect: {fileID: 0}
 --- !u!1 &5287398155648133352
 GameObject:
   m_ObjectHideFlags: 0
@@ -532,6 +534,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _collider: {fileID: 0}
   _crystal: {fileID: 6334791001117611578}
+  _effect: {fileID: 0}
 --- !u!1 &6333486721599105616
 GameObject:
   m_ObjectHideFlags: 0
@@ -687,6 +690,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _collider: {fileID: 0}
   _crystal: {fileID: 6334791001117611578}
+  _effect: {fileID: 0}
 --- !u!1 &6838204077159033980
 GameObject:
   m_ObjectHideFlags: 0
@@ -848,6 +852,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _collider: {fileID: 0}
   _crystal: {fileID: 6334791001117611578}
+  _effect: {fileID: 0}
 --- !u!1 &8214615603821986936
 GameObject:
   m_ObjectHideFlags: 0
@@ -1011,6 +1016,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _collider: {fileID: 0}
   _crystal: {fileID: 6334791001117611578}
+  _effect: {fileID: 0}
 --- !u!1 &9080819694606261042
 GameObject:
   m_ObjectHideFlags: 0
@@ -1171,3 +1177,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _collider: {fileID: 0}
   _crystal: {fileID: 6334791001117611578}
+  _effect: {fileID: 0}

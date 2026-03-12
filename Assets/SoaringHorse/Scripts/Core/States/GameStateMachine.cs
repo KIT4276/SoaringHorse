@@ -67,5 +67,6 @@ public sealed class GameStateMachine : IGameStateMachine, IInitializable, ITicka
 
         _current.Enter();
         ChangeState?.Invoke(_current);
+        Debug.Log(_current);
     }
 }

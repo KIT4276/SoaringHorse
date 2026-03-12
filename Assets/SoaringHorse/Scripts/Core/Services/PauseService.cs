@@ -38,4 +38,5 @@ public sealed class PauseService : IPauseService
     {
         _paused = false;
     }
+
 }

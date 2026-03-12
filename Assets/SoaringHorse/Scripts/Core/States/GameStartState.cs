@@ -1,6 +1,3 @@
-
-using UnityEngine;
-
 public sealed class GameStartState : IGameState
 {
     private readonly IGameStateMachine _sm;
