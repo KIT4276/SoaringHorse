@@ -2053,11 +2053,11 @@ MonoBehaviour:
   _exitButton: {fileID: 847240006291808305}
   _reduceSpeedButton: {fileID: 5253667326338227789}
   _startAgainButton: {fileID: 6072115855924454259}
-  _givLifeButton: {fileID: 8144927114577516068}
+  _rewardLifeButton: {fileID: 8144927114577516068}
   _escButton: {fileID: 1534892843783237861}
   _finalScore: {fileID: 2002622621838352499}
   _rewardPanel: {fileID: 6194075490951599676}
-  _rewardButton: {fileID: 2357145970067353673}
+  _rewardYesButton: {fileID: 2357145970067353673}
   _escapeToPauseButton: {fileID: 3744053095532353078}
 --- !u!114 &5663447606250647811
 MonoBehaviour:
@@ -2229,7 +2229,7 @@ GameObject:
   - component: {fileID: 508043306008308601}
   - component: {fileID: 2357145970067353673}
   m_Layer: 5
-  m_Name: RewardwdButton
+  m_Name: RewardwdYesButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3299,7 +3299,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.19200423, g: 0.381132, b: 0.32377923, a: 0.69803923}
+  m_Color: {r: 0.19200423, g: 0.381132, b: 0.32377923, a: 1}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -3776,8 +3776,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4278190080
-  m_fontColor: {r: 0, g: 0, b: 0, a: 1}
+    rgba: 4294967295
+  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:

@@ -1,4 +1,3 @@
-using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -7,41 +6,45 @@ using Zenject;
 public class GameUI : MonoBehaviour, IInitializable, ILateDisposable
 {
     [SerializeField] private GameUIAnimator _gameUIAnimator;
+
+    [Header("HUD")]
     [SerializeField] private TMP_Text _life;
     [SerializeField] private TMP_Text _exp;
     [SerializeField] private TMP_Text _score;
+
+    [Header("Root Panels")]
     [SerializeField] private GameObject _pausePanel;
     [SerializeField] private GameObject _playPanel;
 
-    [Space]
-    [Header("Pause")]
+    [Header("Pause Menu")]
     [SerializeField] private Button _exitButton;
     [SerializeField] private Button _reduceSpeedButton;
     [SerializeField] private Button _startAgainButton;
-    [SerializeField] private Button _givLifeButton;
+    [SerializeField] private Button _rewardLifeButton;
     [SerializeField] private Button _escButton;
     [SerializeField] private TMP_Text _finalScore;
 
-    [Space]
-    [Header("Advertising")]
+    [Header("Reward Panel")]
     [SerializeField] private GameObject _rewardPanel;
-    [SerializeField] private Button _rewardButton;
+    [SerializeField] private Button _rewardYesButton;
     [SerializeField] private Button _escapeToPauseButton;
 
-    private PauseMenu _pauseMenu;
     private LiveSystem _liveSystem;
     private ExperienceSystem _experienceSystem;
     private ScoreSystem _scoreSystem;
     private IPauseService _pauseService;
     private InputManager _inputManager;
+    private PauseMenu _pauseMenu;
+    private IRewardedService _rewardedService;
 
-    private RewardType _selectedRewardType = RewardType.None;
-    private bool _isDeathPause;
+    private PendingReward _pendingReward = PendingReward.None;
 
-    private enum RewardType
+    private bool _resumeBlocked;
+
+    private enum PendingReward
     {
         None,
-        GiveLife,
+        Life,
         ReduceSpeed
     }
 
@@ -52,8 +55,8 @@ public class GameUI : MonoBehaviour, IInitializable, ILateDisposable
         ScoreSystem scoreSystem,
         IPauseService pauseService,
         InputManager inputManager,
-        StartMenuController startMenuController,
-        PauseMenu pauseMenu)
+        PauseMenu pauseMenu,
+        IRewardedService rewardedService)
     {
         _liveSystem = liveSystem;
         _experienceSystem = experienceSystem;
@@ -61,6 +64,7 @@ public class GameUI : MonoBehaviour, IInitializable, ILateDisposable
         _pauseService = pauseService;
         _inputManager = inputManager;
         _pauseMenu = pauseMenu;
+        _rewardedService = rewardedService;
     }
 
     public void Initialize()
@@ -70,30 +74,31 @@ public class GameUI : MonoBehaviour, IInitializable, ILateDisposable
         _liveSystem.Death += OnDeath;
 
         _experienceSystem.ChangeValue += OnExpChange;
+
         _scoreSystem.ChangeValue += OnScoreChange;
         _scoreSystem.ChangeIntegerValue += OnIntScoreChange;
 
         _inputManager.EscPressed += OnEscPressed;
-        _pauseService.PauseRequested += OnPause;
-        _pauseService.ResumeRequested += OnResume;
+
+        _pauseService.PauseRequested += OnPauseRequested;
+        _pauseService.ResumeRequested += OnResumeRequested;
+
+        _rewardedService.RewardGranted += OnRewardGranted;
 
         _exitButton.onClick.AddListener(Exit);
-        _reduceSpeedButton.onClick.AddListener(OnReduceSpeedClicked);
+        _reduceSpeedButton.onClick.AddListener(OnRewardReduceSpeedButtonClicked);
         _startAgainButton.onClick.AddListener(StartAgain);
-        _givLifeButton.onClick.AddListener(OnGiveLifeClicked);
-        _rewardButton.onClick.AddListener(OnRewardButtonClicked);
-        _escapeToPauseButton.onClick.AddListener(BackToPauseMenu);
+        _rewardLifeButton.onClick.AddListener(OnRewardLifeButtonClicked);
+
+        _rewardYesButton.onClick.AddListener(OnRewardYesClicked);
+        _escapeToPauseButton.onClick.AddListener(ReturnFromRewardPanel);
 
         _pausePanel.SetActive(false);
         _playPanel.SetActive(true);
         _rewardPanel.SetActive(false);
+        _finalScore.gameObject.SetActive(false);
 
-        _isDeathPause = false;
-        _selectedRewardType = RewardType.None;
-
-        OnLifeChange(_liveSystem.CurrentLives);
-        OnExpChange(_experienceSystem.Exp);
-        OnScoreChange(_scoreSystem.Score);
+        RefreshHudInstant();
     }
 
     public void LateDispose()
@@ -103,106 +108,141 @@ public class GameUI : MonoBehaviour, IInitializable, ILateDisposable
         _liveSystem.Death -= OnDeath;
 
         _experienceSystem.ChangeValue -= OnExpChange;
+
         _scoreSystem.ChangeValue -= OnScoreChange;
         _scoreSystem.ChangeIntegerValue -= OnIntScoreChange;
 
         _inputManager.EscPressed -= OnEscPressed;
-        _pauseService.PauseRequested -= OnPause;
-        _pauseService.ResumeRequested -= OnResume;
+
+        _pauseService.PauseRequested -= OnPauseRequested;
+        _pauseService.ResumeRequested -= OnResumeRequested;
+
+        _rewardedService.RewardGranted -= OnRewardGranted;
 
         _exitButton.onClick.RemoveListener(Exit);
-        _reduceSpeedButton.onClick.RemoveListener(OnReduceSpeedClicked);
+        _reduceSpeedButton.onClick.RemoveListener(OnRewardReduceSpeedButtonClicked);
         _startAgainButton.onClick.RemoveListener(StartAgain);
-        _givLifeButton.onClick.RemoveListener(OnGiveLifeClicked);
-        _rewardButton.onClick.RemoveListener(OnRewardButtonClicked);
-        _escapeToPauseButton.onClick.RemoveListener(BackToPauseMenu);
+        _rewardLifeButton.onClick.RemoveListener(OnRewardLifeButtonClicked);
+
+        _rewardYesButton.onClick.RemoveListener(OnRewardYesClicked);
+        _escapeToPauseButton.onClick.RemoveListener(ReturnFromRewardPanel);
     }
 
-    public void OnEscPressed() =>
+    private void OnEscPressed()
+    {
+        if (_rewardPanel.activeSelf)
+        {
+            ReturnFromRewardPanel();
+            return;
+        }
+
+        if (_resumeBlocked)
+            return;
+
         _pauseService.TogglePause();
+    }
+
+    private void OnPauseRequested()
+    {
+        _pausePanel.SetActive(true);
+        _playPanel.SetActive(false);
+
+        ShowNormalPauseMenu();
+    }
+
+    private void OnResumeRequested()
+    {
+        _pausePanel.SetActive(false);
+        _playPanel.SetActive(true);
+
+        _rewardPanel.SetActive(false);
+        _pendingReward = PendingReward.None;
+    }
 
     private void OnDeath()
     {
-        _isDeathPause = true;
+        _resumeBlocked = true;
+
         _pauseService.RequestPause();
+
+        _pausePanel.SetActive(true);
+        _playPanel.SetActive(false);
+
+        ShowDeathPauseMenu();
+    }
+
+    private void ShowNormalPauseMenu()
+    {
+        _rewardPanel.SetActive(false);
+
+        _reduceSpeedButton.gameObject.SetActive(true);
+        _escButton.gameObject.SetActive(true);
+        _finalScore.gameObject.SetActive(false);
+    }
+
+    private void ShowDeathPauseMenu()
+    {
+        _rewardPanel.SetActive(false);
+
+        _reduceSpeedButton.gameObject.SetActive(false);
+        _escButton.gameObject.SetActive(false);
+        _finalScore.gameObject.SetActive(true);
         _finalScore.text = $"Ñ÷¸ò {_scoreSystem.Score:F0}";
     }
 
-    private void OnPause()
+    private void OpenRewardPanel(PendingReward reward)
     {
-        ShowPauseState();
+        _pendingReward = reward;
+        _rewardPanel.SetActive(true);
     }
 
-    private void OnResume()
+    private void ReturnFromRewardPanel()
     {
-        _isDeathPause = false;
-        _selectedRewardType = RewardType.None;
-
-        _pausePanel.SetActive(false);
         _rewardPanel.SetActive(false);
-        _playPanel.SetActive(true);
+        _pendingReward = PendingReward.None;
+        if (_resumeBlocked)
+            ShowDeathPauseMenu();
+        else
+            ShowNormalPauseMenu();
     }
 
-    private void OnReduceSpeedClicked()
+    private void OnRewardLifeButtonClicked()
     {
-        _selectedRewardType = RewardType.ReduceSpeed;
-        ShowRewardPanel();
+        OpenRewardPanel(PendingReward.Life);
     }
 
-    private void OnGiveLifeClicked()
+    private void OnRewardReduceSpeedButtonClicked()
     {
-        _selectedRewardType = RewardType.GiveLife;
-        ShowRewardPanel();
+        OpenRewardPanel(PendingReward.ReduceSpeed);
     }
 
-    private void OnRewardButtonClicked()
+    private void OnRewardYesClicked()
     {
-        switch (_selectedRewardType)
+        switch (_pendingReward)
         {
-            case RewardType.GiveLife:
+            case PendingReward.Life:
                 _pauseMenu.ShowRewardedForLifes();
                 break;
 
-            case RewardType.ReduceSpeed:
+            case PendingReward.ReduceSpeed:
                 _pauseMenu.ShowRewardedForReduseSpeed();
                 break;
         }
     }
 
-    private void BackToPauseMenu()
+    private void OnRewardGranted()
     {
-        ShowPauseState();
+        if (_pendingReward == PendingReward.Life)
+            _resumeBlocked = false;
+
+        ReturnFromRewardPanel();
     }
 
-    private void ShowRewardPanel()
-    {
-        _rewardPanel.SetActive(true);
-        _pausePanel.SetActive(false);
-        _playPanel.SetActive(false);
-    }
+    private void StartAgain() =>
+        _pauseMenu.StartAgain();
 
-    private void ShowPauseState()
-    {
-        _rewardPanel.SetActive(false);
-        _pausePanel.SetActive(true);
-        _playPanel.SetActive(false);
-
-        if (_isDeathPause)
-        {
-            _reduceSpeedButton.gameObject.SetActive(false);
-            _givLifeButton.gameObject.SetActive(true);
-            _finalScore.gameObject.SetActive(true);
-            _escButton.gameObject.SetActive(false);
-            _finalScore.text = $"Ñ÷¸ò {_scoreSystem.Score:F0}";
-        }
-        else
-        {
-            _reduceSpeedButton.gameObject.SetActive(true);
-            _givLifeButton.gameObject.SetActive(true);
-            _finalScore.gameObject.SetActive(false);
-            _escButton.gameObject.SetActive(true);
-        }
-    }
+    private void Exit() =>
+        _pauseMenu.Exit();
 
     private void OnIntScoreChange() =>
         _gameUIAnimator.ScoreImageJuiceBump();
@@ -219,195 +259,19 @@ public class GameUI : MonoBehaviour, IInitializable, ILateDisposable
         OnLifeChange(value);
     }
 
-    private void StartAgain() =>
-        _pauseMenu.StartAgain();
-
-    private void Exit() =>
-        _pauseMenu.Exit();
-
     private void OnLifeChange(int value) =>
         _life.text = value.ToString();
 
     private void OnExpChange(float value) =>
-        _exp.text = (value * 100).ToString("F0");
+        _exp.text = (value * 100f).ToString("F0");
 
     private void OnScoreChange(float value) =>
         _score.text = value.ToString("F0");
+
+    private void RefreshHudInstant()
+    {
+        OnLifeChange(_liveSystem.CurrentLives);
+        OnExpChange(_experienceSystem.Exp);
+        OnScoreChange(_scoreSystem.Score);
+    }
 }
-
-
-//using System;
-//using TMPro;
-//using UnityEngine;
-//using UnityEngine.UI;
-//using Zenject;
-
-//public class GameUI : MonoBehaviour, IInitializable, ILateDisposable
-//{
-//    [SerializeField] private GameUIAnimator _gameUIAnimator;
-//    [SerializeField] private TMP_Text _life;
-//    [SerializeField] private TMP_Text _exp;
-//    [SerializeField] private TMP_Text _score;
-//    [SerializeField] private GameObject _pausePanel;
-//    [SerializeField] private GameObject _playPanel;
-//    [Space]
-//    [Header("Pause")]
-//    [SerializeField] private Button _exitButton;
-//    [SerializeField] private Button _reduceSpeedButton;
-//    [SerializeField] private Button _startAgainButton;
-//    [SerializeField] private Button _givLifeButton;
-//    [SerializeField] private Button _escButton;
-//    [SerializeField] private TMP_Text _finalScore;
-//    [Space]
-//    [Header("Advertising")]
-//    [SerializeField] private GameObject _rewardPanel;
-//    [SerializeField] private Button _rewardButton;
-//    [SerializeField] private Button _escapeToPauseButton;
-
-//    private PauseMenu _pauseMenu;
-//    private LiveSystem _liveSystem;
-//    private ExperienceSystem _experienceSystem;
-//    private ScoreSystem _scoreSystem;
-//    private IPauseService _pauseService;
-//    private InputManager _inputManager;
-
-//    [Inject]
-//    public void Construct(LiveSystem liveSystem, ExperienceSystem experienceSystem, ScoreSystem scoreSystem,
-//        IPauseService pauseService, InputManager inputManager, StartMenuController startMenuController, PauseMenu pauseMenu)
-//    {
-//        _liveSystem = liveSystem;
-//        _experienceSystem = experienceSystem;
-//        _scoreSystem = scoreSystem;
-//        _pauseService = pauseService;
-//        _inputManager = inputManager;
-//        _pauseMenu = pauseMenu;
-//    }
-
-//    public void Initialize()
-//    {
-//        _liveSystem.ValueIncreased += OnLifeIncreased;
-//        _liveSystem.ValueDecreased += OnLifeDecreased;
-//        _liveSystem.Death += OnDeath;
-
-//        _experienceSystem.ChangeValue += OnExpChange;
-//        _scoreSystem.ChangeValue += OnScoreChange;
-//        _scoreSystem.ChangeIntegerValue += OnIntScoreChange;
-
-//        _inputManager.EscPressed += OnEscPressed;
-//        _pauseService.PauseRequested += OnPause;
-//        _pauseService.ResumeRequested += OnResume;
-
-//        _pausePanel.SetActive(false);
-//        _playPanel.SetActive(true);
-//        _rewardPanel.SetActive(false);
-
-//        _exitButton.onClick.AddListener(Exit);
-//        _reduceSpeedButton.onClick.AddListener(OfferShowRewarded);
-//        _startAgainButton.onClick.AddListener(StartAgain);
-//        _givLifeButton.onClick.AddListener(GiveLife);
-//        _escapeToPauseButton.onClick.AddListener(BackToPauseMenu);
-
-
-//        OnLifeChange(_liveSystem.CurrentLives);
-//        OnExpChange(_experienceSystem.Exp);
-//        OnScoreChange(_scoreSystem.Score);
-
-//    }
-
-//    public void LateDispose()
-//    {
-//        _liveSystem.ValueIncreased -= OnLifeIncreased;
-//        _liveSystem.ValueDecreased -= OnLifeDecreased;
-//        _liveSystem.Death -= OnDeath;
-//        _experienceSystem.ChangeValue -= OnExpChange;
-//        _scoreSystem.ChangeValue -= OnScoreChange;
-//        _scoreSystem.ChangeIntegerValue -= OnIntScoreChange;
-//        _inputManager.EscPressed -= OnEscPressed;
-//        _pauseService.PauseRequested -= OnPause;
-//        _pauseService.ResumeRequested -= OnResume;
-
-//        _exitButton.onClick.RemoveListener(Exit);
-//        _reduceSpeedButton.onClick.RemoveListener(OfferShowRewarded);
-//        _startAgainButton.onClick.RemoveListener(StartAgain);
-//        _givLifeButton.onClick.RemoveListener(GiveLife);
-//        _escapeToPauseButton.onClick.RemoveListener(BackToPauseMenu);
-//    }
-
-//    private void BackToPauseMenu()
-//    {
-//        _rewardPanel.SetActive(false);
-//        _pausePanel.SetActive(true);
-//        _playPanel.SetActive(false);
-//    }
-
-//    private void OfferShowRewarded()
-//    {
-//        _rewardPanel.SetActive(true);
-//        _pausePanel.SetActive(false);
-//        _playPanel.SetActive(false);
-
-//    }
-
-//    private void OnDeath()
-//    {
-//        _pauseService.RequestPause();
-//        _reduceSpeedButton.gameObject.SetActive(false);
-//        _finalScore.gameObject.SetActive(true);
-//        _escButton.gameObject.SetActive(false);
-//        _finalScore.text = $"Ñ÷¸ò {_scoreSystem.Score:F0}";
-//    }
-
-//    public void OnEscPressed() =>
-//        _pauseService.TogglePause();
-
-//    private void OnIntScoreChange() =>
-//        _gameUIAnimator.ScoreImageJuiceBump();
-
-//    private void OnLifeDecreased(int valueobj)
-//    {
-//        _gameUIAnimator.LifeImageJuiceBumpDecreased();
-//        OnLifeChange(valueobj);
-//    }
-
-//    private void OnLifeIncreased(int value)
-//    {
-//        _gameUIAnimator.LifeImageJuiceBumpIncrease();
-//        OnLifeChange(value);
-//    }
-
-//    private void StartAgain() =>
-//        _pauseMenu.StartAgain();
-
-//    private void GiveLife() =>
-//        _pauseMenu.ShowRewardedForLifes();
-
-//    private void ShowRewarded() =>
-//        _pauseMenu.ShowRewardedForReduseSpeed();
-
-//    private void Exit() =>
-//        _pauseMenu.Exit();
-
-//    private void OnResume()
-//    {
-//        _pausePanel.SetActive(false);
-//        _playPanel.SetActive(true);
-//    }
-
-//    private void OnPause()
-//    {
-//        _pausePanel.SetActive(true);
-//        _finalScore.gameObject.SetActive(false);
-//        _reduceSpeedButton.gameObject.SetActive(true);
-//        _escButton.gameObject.SetActive(true);
-//        _playPanel.SetActive(false);
-//    }
-
-//    private void OnLifeChange(int value) =>
-//        _life.text = value.ToString();
-
-//    private void OnExpChange(float value) =>
-//        _exp.text = (value * 100).ToString("F0");
-
-//    private void OnScoreChange(float value) =>
-//        _score.text = value.ToString("F0");
-//}
