@@ -2,7 +2,7 @@ using System;
 using UnityEngine;
 using Zenject;
 
-public class SpeedSystem : ITickable, IInitializable
+public class SpeedSystem : ITickable
 {
     private readonly float _minSpeed;
     private readonly ProgressSyncService _progressSyncService;
@@ -27,7 +27,7 @@ public class SpeedSystem : ITickable, IInitializable
 
     public void Initialize()
     {
-        CurrentSpeed = _progressSyncService.ReadSpeed();
+        CurrentSpeed = Mathf.Max(_progressSyncService.ReadSpeed(), _minSpeed);
         CurrentSpeedChanged?.Invoke(CurrentSpeed);
     }
 

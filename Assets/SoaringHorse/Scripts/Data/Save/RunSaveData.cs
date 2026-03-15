@@ -10,8 +10,8 @@ public class RunSaveData
 
     public float score = 0;
     public int lifes = 3;
-    internal float speed = 4;
-    internal float runTime = 0;
+    public float speed = 4;
+    public float runTime = 0;
 
     public long lastWriteUnixUtc = 0;
 
@@ -24,7 +24,5 @@ public class RunSaveData
         if (lifes < 0) lifes = 0;
         if(speed < 4) speed = 4;
         if(runTime < 0) runTime = 0;
-
-       
     }
 }
