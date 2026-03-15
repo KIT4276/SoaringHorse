@@ -1,4 +1,5 @@
 using System;
+using UnityEngine;
 
 [Serializable]
 public class RunSaveData 
@@ -23,5 +24,7 @@ public class RunSaveData
         if (lifes < 0) lifes = 0;
         if(speed < 4) speed = 4;
         if(runTime < 0) runTime = 0;
+
+       
     }
 }

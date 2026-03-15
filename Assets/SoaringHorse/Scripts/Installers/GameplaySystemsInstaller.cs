@@ -8,5 +8,7 @@ public class GameplaySystemsInstaller : MonoInstaller
             .AsSingle();
         Container.BindInterfacesAndSelfTo<ScoreSystem>()
             .AsSingle();
+        Container.BindInterfacesAndSelfTo<SpeedSystem>()
+            .AsSingle();
     }
 }

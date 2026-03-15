@@ -28,7 +28,7 @@ public class GameUI : MonoBehaviour, IInitializable, ILateDisposable
     [SerializeField] private GameObject _rewardPanel;
     [SerializeField] private Button _rewardYesButton;
     [SerializeField] private Button _escapeToPauseButton;
-
+    private SpeedSystem _speedSystem;
     private LiveSystem _liveSystem;
     private ScoreSystem _scoreSystem;
     private IPauseService _pauseService;
@@ -39,7 +39,7 @@ public class GameUI : MonoBehaviour, IInitializable, ILateDisposable
     private PendingReward _pendingReward = PendingReward.None;
 
     private bool _resumeBlocked;
-    private EnvironmentMove _environmentMove;
+   // private EnvironmentMove _environmentMove;
 
     private enum PendingReward
     {
@@ -56,9 +56,11 @@ public class GameUI : MonoBehaviour, IInitializable, ILateDisposable
         InputManager inputManager,
         PauseMenu pauseMenu,
         IRewardedService rewardedService,
-        EnvironmentMove environmentMove)
+       /* EnvironmentMove environmentMove*/
+       SpeedSystem speedSystem)
     {
-        _environmentMove = environmentMove; ;
+        //_environmentMove = environmentMove; ;
+        _speedSystem = speedSystem;
         _liveSystem = liveSystem;
         _scoreSystem = scoreSystem;
         _pauseService = pauseService;
@@ -73,7 +75,7 @@ public class GameUI : MonoBehaviour, IInitializable, ILateDisposable
         _liveSystem.ValueDecreased += OnLifeDecreased;
         _liveSystem.Death += OnDeath;
 
-        _environmentMove.SpeedChanged += OnSpeedChange;
+        _speedSystem.CurrentSpeedChanged += OnSpeedChange;
 
         _scoreSystem.ChangeValue += OnScoreChange;
         _scoreSystem.ChangeIntegerValue += OnIntScoreChange;
@@ -106,7 +108,7 @@ public class GameUI : MonoBehaviour, IInitializable, ILateDisposable
         _liveSystem.ValueDecreased -= OnLifeDecreased;
         _liveSystem.Death -= OnDeath;
 
-        _environmentMove.SpeedChanged -= OnSpeedChange;
+        _speedSystem.CurrentSpeedChanged -= OnSpeedChange;
 
         _scoreSystem.ChangeValue -= OnScoreChange;
         _scoreSystem.ChangeIntegerValue -= OnIntScoreChange;
@@ -266,7 +268,7 @@ public class GameUI : MonoBehaviour, IInitializable, ILateDisposable
     private void RefreshHudInstant()
     {
         OnLifeChange(_liveSystem.CurrentLives);
-        OnSpeedChange(_environmentMove.MoveSpeed);
+        OnSpeedChange(_speedSystem.CurrentSpeed);
         OnScoreChange(_scoreSystem.Score);
     }
 }
