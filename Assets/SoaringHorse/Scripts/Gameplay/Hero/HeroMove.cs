@@ -15,7 +15,7 @@ public class HeroMove : MonoBehaviour
     {
         _gameConfig = gameConfig;
         _inputManager = inputManager;
-        _rigidbody.gravityScale = gameConfig.Gravity;
+        //_rigidbody.gravityScale = gameConfig.Gravity;
     }
 
     private void OnEnable()

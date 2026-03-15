@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2092004423195625406}
   - component: {fileID: 9093348376603879295}
+  - component: {fileID: 8047490908648801622}
   m_Layer: 0
   m_Name: YandexPlatform
   m_TagString: Untagged
@@ -44,3 +45,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 51a4c0f4565f54d4b9fff6d7fc87e0f5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &8047490908648801622
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5564849483569892113}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ed15697cf6d88a14489e995595c02253, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _platform: {fileID: 9093348376603879295}

@@ -1,48 +1,61 @@
+using System;
 using UnityEngine;
 using Zenject;
 
 public class EnvironmentMove : MonoBehaviour
 {
     private float _startMoveSpeed;
-   private float _currentMoveSpeed;
-    private ExperienceSystem _experienceSystem;
+    [SerializeField] private float _currentMoveSpeed;
+    private float _speedTickTime;
+    private float _speedIncreasePerTick;
     private Vector3 _moveVector = Vector3.zero;
+
+    private float _time;
 
     public float MoveSpeed => _currentMoveSpeed;
 
+    public event Action<float> SpeedChanged;
+
     [Inject]
-    private void Construct(EnvironmentConfig gameConfig, ExperienceSystem experienceSystem)
+    private void Construct(EnvironmentConfig envConfig)
     {
-        _startMoveSpeed = gameConfig.EnvironmentMoveSpeed;
+        _startMoveSpeed = envConfig.EnvironmentMoveSpeed;
         _currentMoveSpeed = _startMoveSpeed;
-        _experienceSystem = experienceSystem;
+        _speedTickTime = envConfig.SpeedTickTime;
+        _speedIncreasePerTick = envConfig.SpeedIncreasePerTick;
+        SpeedChanged?.Invoke(_currentMoveSpeed);
     }
 
-    private void Start() => 
-        _experienceSystem.ChangeValue += OnExpChanged;
-
-    private void OnDestroy() => 
-        _experienceSystem.ChangeValue -= OnExpChanged;
-
-    private void OnExpChanged(float exp) => 
-        ChangeSpeed(exp);
-
-    private void Update() =>
-        OnMoveEnvironment();
-
-    public void ChangeSpeed(float increase) =>
-        _currentMoveSpeed += increase;
-
-    public void StopMove() =>
-        _currentMoveSpeed = 0;
-
-    public void MultiplySpeed(float multiplier) => 
-        _currentMoveSpeed *= multiplier;
-
-    public void ReduceSpeedByPercent(float percent)
+    private void Update()
     {
-        float multiplier = 1f - percent;
-        _currentMoveSpeed *= multiplier;
+        OnSpeedChange();
+        OnMoveEnvironment();
+    }
+
+    public void ReduceByPercent(float v)
+    {
+        _currentMoveSpeed *= 1 - v;
+        if (_currentMoveSpeed < _startMoveSpeed)
+            _currentMoveSpeed = _startMoveSpeed;
+
+        SpeedChanged?.Invoke(_currentMoveSpeed);
+    }
+
+    private void OnSpeedChange()
+    {
+        _time += Time.deltaTime;
+
+        if (_time < _speedTickTime)
+            return;
+
+        _time = 0f;
+        AddSpeed(_speedIncreasePerTick);
+    }
+
+    private void AddSpeed(float speedIncreasePerTick)
+    {
+        _currentMoveSpeed += speedIncreasePerTick;
+        SpeedChanged?.Invoke(_currentMoveSpeed);
     }
 
     private void OnMoveEnvironment()

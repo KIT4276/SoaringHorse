@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4784705fbcaeb73448ff5f6b5259f6e1, type: 3}
   m_Name: ProgressionConfig
   m_EditorClassIdentifier: 
-  _experienceIncrease: 0.01
-  _timeExperienceIncrease: 4
+  _scoreIncreasePerTick: 1
+  _scoreTickTime: 3

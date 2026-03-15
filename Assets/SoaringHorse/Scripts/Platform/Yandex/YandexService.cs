@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using UnityEngine;
 using Zenject;
 
@@ -17,8 +16,8 @@ public sealed class YandexService : IYandexService, IInitializable, IDisposable
     private float _nextInterstitialTime = 0f;
     private const float InterstitialCooldownSec = 90f;
 
-    private const bool MockRewardedWhenUnavailable = true;
-    private const float MockDelaySeconds = 0.25f;
+    //private const bool MockRewardedWhenUnavailable = false;
+    //private const float MockDelaySeconds = 0.25f;
 
     public bool HasPlayer => _platform != null && _platform.HasPlayer;
     public bool IsSdkReady => _platform != null && _platform.IsSdkReady;
@@ -85,26 +84,23 @@ public sealed class YandexService : IYandexService, IInitializable, IDisposable
 
     public void ShowRewarded(Action onReward)
     {
-        if (_rvInProgress) return;
-
-        bool adsUnavailable =
-#if UNITY_WEBGL && !UNITY_EDITOR
-            _platform == null || !_platform.IsSdkReady;
-#else
-            true;
+       // Debug.Log($"[YandexService] ShowRewarded, platform null={_platform == null}, sdkReady={_platform?.IsSdkReady}");
+#if UNITY_EDITOR
+        onReward?.Invoke();
 #endif
-
-        if (adsUnavailable)
-        {
-            if (!MockRewardedWhenUnavailable) return;
-            _runner.StartCoroutine(MockRewarded(onReward));
+        if (_rvInProgress)
             return;
-        }
+
+        if (_platform == null || !_platform.IsSdkReady)
+            return;
 
         _rvInProgress = true;
-
         bool rewarded = false;
-        void OnRewarded() => rewarded = true;
+
+        void OnRewarded()
+        {
+            rewarded = true;
+        }
 
         void OnClosed()
         {
@@ -112,21 +108,14 @@ public sealed class YandexService : IYandexService, IInitializable, IDisposable
             _platform.RvClosed -= OnClosed;
             _rvInProgress = false;
 
-            if (rewarded) onReward?.Invoke();
+            if (rewarded)
+                onReward?.Invoke();
         }
 
         _platform.RvRewarded += OnRewarded;
         _platform.RvClosed += OnClosed;
 
         _platform.ShowRewarded();
-    }
-
-    private IEnumerator MockRewarded(Action onReward)
-    {
-        _rvInProgress = true;
-        yield return new WaitForSecondsRealtime(MockDelaySeconds);
-        onReward?.Invoke();
-        _rvInProgress = false;
     }
 
     private void OnPauseRequested() => _pause.RequestPause();

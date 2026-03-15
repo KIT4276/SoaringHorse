@@ -5,12 +5,6 @@ public class ProgressSyncService
     public ProgressSyncService(IPlayerProgress progress) => 
         _progress = progress;
 
-    public void SyncExperience(float value) => 
-        _progress.AddExp(value);
-
-    public float ReadExperience()
-        => _progress.Exp;
-
     public float ReadScore() =>
         _progress.Score;
 

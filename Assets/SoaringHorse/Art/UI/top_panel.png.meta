@@ -1,0 +1,297 @@
+fileFormatVersion: 2
+guid: e72dfc87207c75142a5c1ae784b419c1
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -3822306962366413636
+    second: top_panel_0
+  - first:
+      213: 4900605941119457466
+    second: top_panel_1
+  - first:
+      213: 7816520913676091511
+    second: top_panel_2
+  - first:
+      213: -5045624558094076312
+    second: top_panel_3
+  - first:
+      213: -3029959747277798916
+    second: top_panel_4
+  - first:
+      213: -5362892461015060444
+    second: top_panel_5
+  - first:
+      213: 6648061630516986461
+    second: top_panel_6
+  - first:
+      213: 4863551644301901708
+    second: top_panel_7
+  - first:
+      213: 1694088748595622399
+    second: top_panel_8
+  - first:
+      213: 7906403292640886266
+    second: top_panel_9
+  - first:
+      213: 8618285815656342587
+    second: top_panel_10
+  - first:
+      213: 6985361641299552015
+    second: top_panel_11
+  - first:
+      213: -4145215286951418671
+    second: top_panel_12
+  - first:
+      213: 8233001972571345785
+    second: top_panel_13
+  - first:
+      213: 4341355462900703383
+    second: top_panel_14
+  - first:
+      213: -4306823980566238070
+    second: top_panel_15
+  - first:
+      213: 4119427401053786910
+    second: top_panel_16
+  - first:
+      213: 8125690174108939380
+    second: top_panel_17
+  - first:
+      213: 4865425543717326409
+    second: top_panel_18
+  - first:
+      213: -4255996550557647382
+    second: top_panel_19
+  - first:
+      213: 2422921357785539410
+    second: top_panel_20
+  - first:
+      213: 4886080897811271973
+    second: top_panel_21
+  - first:
+      213: 2178221918743801925
+    second: top_panel_22
+  - first:
+      213: 6863854746014876085
+    second: top_panel_23
+  - first:
+      213: 8372480977812293836
+    second: top_panel_24
+  - first:
+      213: 7119868907235918581
+    second: top_panel_25
+  - first:
+      213: 7527218104219965221
+    second: top_panel_26
+  - first:
+      213: -3485511425667391927
+    second: top_panel_27
+  - first:
+      213: -5533522480544569675
+    second: top_panel_28
+  - first:
+      213: -5963999667675641657
+    second: top_panel_29
+  - first:
+      213: 6166079872413409806
+    second: top_panel_30
+  - first:
+      213: 3814212229475780145
+    second: top_panel_31
+  - first:
+      213: 2234217908886948151
+    second: top_panel_32
+  - first:
+      213: -1992383994996072559
+    second: top_panel_33
+  - first:
+      213: -7561983139873919672
+    second: top_panel_34
+  - first:
+      213: -5454674231782148487
+    second: top_panel_35
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: top_panel_0
+      rect:
+        serializedVersion: 2
+        x: 97
+        y: 364
+        width: 653
+        height: 369
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 784ea5f1085c67e4491137ad3b7ff740
+      internalID: -259523396
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: top_panel_1
+      rect:
+        serializedVersion: 2
+        x: 889
+        y: 324
+        width: 477
+        height: 404
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 14361ef2dad14b140a3b8d663a1fdc4e
+      internalID: 1363665379
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 2e8efb09416565849bcebcaf31a8950b
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      top_panel_0: -259523396
+      top_panel_1: 1363665379
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

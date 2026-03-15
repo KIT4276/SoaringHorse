@@ -38,8 +38,8 @@
                 },
                 {
                     "name": "",
-                    "id": "43456708-0fe4-44c3-8516-bd40e593e4f1",
-                    "path": "<Keyboard>/enter",
+                    "id": "0e4fc48a-2efb-42c7-ae28-b50c013f06a1",
+                    "path": "<Keyboard>/upArrow",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -49,8 +49,8 @@
                 },
                 {
                     "name": "",
-                    "id": "0e4fc48a-2efb-42c7-ae28-b50c013f06a1",
-                    "path": "<Keyboard>/upArrow",
+                    "id": "9d0b48e4-9353-437b-a819-8c12ad22f5f2",
+                    "path": "<Touchscreen>/Press",
                     "interactions": "",
                     "processors": "",
                     "groups": "",

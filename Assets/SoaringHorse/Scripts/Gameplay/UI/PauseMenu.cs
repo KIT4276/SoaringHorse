@@ -24,6 +24,6 @@ public class PauseMenu
     public void ShowRewardedForLifes() =>
         _rewardedService.TryGiveLifes();
 
-    public void Exit() => 
-        Application.Quit();
+    //public void Exit() => 
+    //    Application.Quit();
 }

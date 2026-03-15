@@ -9,7 +9,7 @@ public class GameUI : MonoBehaviour, IInitializable, ILateDisposable
 
     [Header("HUD")]
     [SerializeField] private TMP_Text _life;
-    [SerializeField] private TMP_Text _exp;
+    [SerializeField] private TMP_Text _speed;
     [SerializeField] private TMP_Text _score;
 
     [Header("Root Panels")]
@@ -30,7 +30,6 @@ public class GameUI : MonoBehaviour, IInitializable, ILateDisposable
     [SerializeField] private Button _escapeToPauseButton;
 
     private LiveSystem _liveSystem;
-    private ExperienceSystem _experienceSystem;
     private ScoreSystem _scoreSystem;
     private IPauseService _pauseService;
     private InputManager _inputManager;
@@ -40,6 +39,7 @@ public class GameUI : MonoBehaviour, IInitializable, ILateDisposable
     private PendingReward _pendingReward = PendingReward.None;
 
     private bool _resumeBlocked;
+    private EnvironmentMove _environmentMove;
 
     private enum PendingReward
     {
@@ -51,15 +51,15 @@ public class GameUI : MonoBehaviour, IInitializable, ILateDisposable
     [Inject]
     public void Construct(
         LiveSystem liveSystem,
-        ExperienceSystem experienceSystem,
         ScoreSystem scoreSystem,
         IPauseService pauseService,
         InputManager inputManager,
         PauseMenu pauseMenu,
-        IRewardedService rewardedService)
+        IRewardedService rewardedService,
+        EnvironmentMove environmentMove)
     {
+        _environmentMove = environmentMove; ;
         _liveSystem = liveSystem;
-        _experienceSystem = experienceSystem;
         _scoreSystem = scoreSystem;
         _pauseService = pauseService;
         _inputManager = inputManager;
@@ -73,7 +73,7 @@ public class GameUI : MonoBehaviour, IInitializable, ILateDisposable
         _liveSystem.ValueDecreased += OnLifeDecreased;
         _liveSystem.Death += OnDeath;
 
-        _experienceSystem.ChangeValue += OnExpChange;
+        _environmentMove.SpeedChanged += OnSpeedChange;
 
         _scoreSystem.ChangeValue += OnScoreChange;
         _scoreSystem.ChangeIntegerValue += OnIntScoreChange;
@@ -85,7 +85,6 @@ public class GameUI : MonoBehaviour, IInitializable, ILateDisposable
 
         _rewardedService.RewardGranted += OnRewardGranted;
 
-        _exitButton.onClick.AddListener(Exit);
         _reduceSpeedButton.onClick.AddListener(OnRewardReduceSpeedButtonClicked);
         _startAgainButton.onClick.AddListener(StartAgain);
         _rewardLifeButton.onClick.AddListener(OnRewardLifeButtonClicked);
@@ -107,7 +106,7 @@ public class GameUI : MonoBehaviour, IInitializable, ILateDisposable
         _liveSystem.ValueDecreased -= OnLifeDecreased;
         _liveSystem.Death -= OnDeath;
 
-        _experienceSystem.ChangeValue -= OnExpChange;
+        _environmentMove.SpeedChanged -= OnSpeedChange;
 
         _scoreSystem.ChangeValue -= OnScoreChange;
         _scoreSystem.ChangeIntegerValue -= OnIntScoreChange;
@@ -119,7 +118,6 @@ public class GameUI : MonoBehaviour, IInitializable, ILateDisposable
 
         _rewardedService.RewardGranted -= OnRewardGranted;
 
-        _exitButton.onClick.RemoveListener(Exit);
         _reduceSpeedButton.onClick.RemoveListener(OnRewardReduceSpeedButtonClicked);
         _startAgainButton.onClick.RemoveListener(StartAgain);
         _rewardLifeButton.onClick.RemoveListener(OnRewardLifeButtonClicked);
@@ -241,9 +239,6 @@ public class GameUI : MonoBehaviour, IInitializable, ILateDisposable
     private void StartAgain() =>
         _pauseMenu.StartAgain();
 
-    private void Exit() =>
-        _pauseMenu.Exit();
-
     private void OnIntScoreChange() =>
         _gameUIAnimator.ScoreImageJuiceBump();
 
@@ -262,8 +257,8 @@ public class GameUI : MonoBehaviour, IInitializable, ILateDisposable
     private void OnLifeChange(int value) =>
         _life.text = value.ToString();
 
-    private void OnExpChange(float value) =>
-        _exp.text = (value * 100f).ToString("F0");
+    private void OnSpeedChange(float value) =>
+        _speed.text = (value * 10).ToString("F1");
 
     private void OnScoreChange(float value) =>
         _score.text = value.ToString("F0");
@@ -271,7 +266,7 @@ public class GameUI : MonoBehaviour, IInitializable, ILateDisposable
     private void RefreshHudInstant()
     {
         OnLifeChange(_liveSystem.CurrentLives);
-        OnExpChange(_experienceSystem.Exp);
+        OnSpeedChange(_environmentMove.MoveSpeed);
         OnScoreChange(_scoreSystem.Score);
     }
 }

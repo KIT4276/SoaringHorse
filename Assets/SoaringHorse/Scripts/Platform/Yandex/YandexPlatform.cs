@@ -21,7 +21,12 @@ public sealed class YandexPlatform : MonoBehaviour
 
     public event Action<string> CloudDataReceived;
 
-    public void Init() => YandexSDKBridge.Init(gameObject.name);
+    public void Init()
+    {
+       // Debug.Log($"[YandexPlatform] Init on GO: {gameObject.name}");
+        YandexSDKBridge.Init(gameObject.name);
+    }
+
     public void Ready() => YandexSDKBridge.Ready();
 
     public void ShowInterstitial() => YandexSDKBridge.ShowInterstitial();
@@ -34,13 +39,14 @@ public sealed class YandexPlatform : MonoBehaviour
     public void OnYsdkInitOk(string _)
     {
         IsSdkReady = true;
+        Debug.Log("[YandexPlatform] SDK READY");
         SdkReady?.Invoke();
     }
 
     public void OnYsdkInitError(string msg)
     {
         IsSdkReady = false;
-        Debug.LogWarning(msg);
+        Debug.LogWarning($"[YandexPlatform] SDK ERROR: {msg}");
     }
 
     public void OnPlayerReady(string hasPlayer)

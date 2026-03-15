@@ -6,8 +6,6 @@ public class GameplaySystemsInstaller : MonoInstaller
     {
         Container.BindInterfacesAndSelfTo<LiveSystem>()
             .AsSingle();
-        Container.BindInterfacesAndSelfTo<ExperienceSystem>()
-            .AsSingle();
         Container.BindInterfacesAndSelfTo<ScoreSystem>()
             .AsSingle();
     }

@@ -1,53 +1,55 @@
 using System;
 using UnityEngine;
+using Zenject;
 
-public class ScoreSystem : IDisposable
+public class ScoreSystem : ITickable
 {
     private readonly ProgressSyncService _progressSyncService;
-    private readonly ExperienceSystem _experienceSystem;
+    private readonly float _scoreIncreasePerTick;
+    private readonly float _scoreTickTime;
 
-    private int _prevInteger;
-    private int _newInteger;
+    private float _time;
 
     public float Score { get; private set; }
-    
+
     public event Action<float> ChangeValue;
     public event Action ChangeIntegerValue;
 
-    public ScoreSystem(ProgressSyncService progressSyncService, ExperienceSystem experienceSystem)
+    public ScoreSystem(ProgressSyncService progressSyncService, ProgressionConfig config)
     {
         _progressSyncService = progressSyncService;
-        _experienceSystem = experienceSystem;
+        _scoreIncreasePerTick = config.ScoreIncreasePerTick;
+        _scoreTickTime = config.ScoreTickTime;
     }
 
     public void Initialize()
     {
-        _prevInteger = 0;
-
         Score = _progressSyncService.ReadScore();
         ChangeValue?.Invoke(Score);
-
-        _experienceSystem.ChangeValue += OnExpChanged;
     }
 
-
-    public void Dispose() => 
-        _experienceSystem.ChangeValue -= OnExpChanged;
-
-    public void ChangeScore(float value)
+    public void Tick()
     {
-        _prevInteger = Mathf.FloorToInt(Score);
+        _time += Time.deltaTime;
+
+        if (_time < _scoreTickTime)
+            return;
+
+        _time = 0f;
+        AddScore(_scoreIncreasePerTick);
+    }
+
+    public void AddScore(float value)
+    {
+        int prevInteger = Mathf.FloorToInt(Score);
 
         Score += value;
         _progressSyncService.SyncScore(value);
         ChangeValue?.Invoke(Score);
 
-        _newInteger = Mathf.FloorToInt(Score);
+        int newInteger = Mathf.FloorToInt(Score);
 
-        if (_newInteger > _prevInteger)
+        if (newInteger > prevInteger)
             ChangeIntegerValue?.Invoke();
     }
-
-    private void OnExpChanged(float exp) => 
-        ChangeScore(exp);
 }

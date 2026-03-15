@@ -7,6 +7,8 @@ public class PlatformInstaller : MonoInstaller
     [SerializeField] private CoroutineRunner _coroutineRunnerPrefab;
     public override void InstallBindings()
     {
+        
+        
         Container.Bind<YandexPlatform>()
         .FromComponentInNewPrefab(_platformPrefab)
         .AsSingle()

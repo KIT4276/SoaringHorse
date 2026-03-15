@@ -35,10 +35,10 @@ public class Bonus : BaseRecyclable
         switch (BonusType)
         {
             case BonusType.luck:
-                _scoreSystem.ChangeScore((float)_value);
+                _scoreSystem.AddScore((float)_value);
                 break;
             case BonusType.life:
-                _liveSystem.AddLives(_value);
+                _liveSystem.AddLives(1);
                 break;
         }
         Despawn();

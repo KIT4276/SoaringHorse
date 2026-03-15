@@ -15,4 +15,3 @@ MonoBehaviour:
   _heroUpForce: 6
   _maxLives: 10
   _invulnerabilityTime: 1
-  _gravity: 1
