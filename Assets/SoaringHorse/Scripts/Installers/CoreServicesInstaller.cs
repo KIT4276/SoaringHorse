@@ -6,7 +6,7 @@ public class CoreServicesInstaller : MonoInstaller
     {
         Container.Bind<IPauseService>().To<PauseService>().AsSingle();
 
-        Container.Bind<IPlayerProgress>().To<PlayerProgress>().AsSingle();
+        Container.Bind<IRunProgress>().To<RunProgress>().AsSingle();
 
         Container.BindInterfacesAndSelfTo<YandexService>().AsSingle().NonLazy();
 

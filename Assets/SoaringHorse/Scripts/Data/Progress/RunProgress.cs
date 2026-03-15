@@ -1,24 +1,33 @@
 using System;
 
-public sealed class PlayerProgress : IPlayerProgress
+public sealed class RunProgress : IRunProgress
 {
     public event Action Changed;
 
     private float _score;
     private int _lifes;
+    private float _speed;
+    private float _runTime;
 
     private bool _suppress;
 
     public float Score => _score;
     public int Lifes => _lifes;
 
-    public void ApplyFromSave(SaveData data)
+    public float Speed => _speed;
+
+    public float RunTime => _runTime;
+
+    public void ApplyFromSave(RunSaveData data)
     {
         if (data == null) return;
 
         _suppress = true;
         _score = data.score;
         _lifes = data.lifes;
+        _speed = data.speed;
+        _runTime = data.runTime;
+
         _suppress = false;
     }
 
@@ -38,9 +47,24 @@ public sealed class PlayerProgress : IPlayerProgress
         Notify();
     }
 
+    public void SetSpeed(float value)
+    {
+        if(_speed == value) return;
+        _speed = value;
+        Notify();
+    }
+
+    public void SetRunTime(float value)
+    {
+       if(RunTime == value) return;
+       _runTime = value;
+        Notify();
+    }
+
     private void Notify()
     {
         if (_suppress) return;
         Changed?.Invoke();
     }
 }
+

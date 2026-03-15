@@ -1,14 +1,16 @@
 using System;
 
 [Serializable]
-public class SaveData 
+public class RunSaveData 
 {
     public const int CurrentVersion = 1;
 
     public int version = CurrentVersion;
-    public float exp = 0;
+
     public float score = 0;
     public int lifes = 3;
+    internal float speed = 4;
+    internal float runTime = 0;
 
     public long lastWriteUnixUtc = 0;
 
@@ -17,8 +19,9 @@ public class SaveData
     public void Fixup()
     {
         if (version <= 0) version = CurrentVersion;
-        if (exp < 0) exp = 0;
         if (score < 0) score = 0;
         if (lifes < 0) lifes = 0;
+        if(speed < 4) speed = 4;
+        if(runTime < 0) runTime = 0;
     }
 }

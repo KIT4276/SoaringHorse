@@ -5,15 +5,15 @@ using Zenject;
 public sealed class SaveService : ISaveService, ITickable, IDisposable
 {
     private const string LocalKeyPrefix = "save_v";
-    private static string LocalKey => $"{LocalKeyPrefix}{SaveData.CurrentVersion}";
+    private static string LocalKey => $"{LocalKeyPrefix}{RunSaveData.CurrentVersion}";
 
     private readonly YandexPlatform _platform;
 
-    public SaveData Data { get; private set; } = new SaveData();
+    public RunSaveData RunData { get; private set; } = new RunSaveData();
     public bool IsLoaded { get; private set; }
     public event Action Loaded;
 
-    private SaveData _localCandidate;
+    private RunSaveData _localCandidate;
     private bool _waitingCloud;
 
     private float _nextCloudAllowedTime = 0f;
@@ -106,7 +106,7 @@ public sealed class SaveService : ISaveService, ITickable, IDisposable
 
         var cloud = TryParse(json);
 
-        SaveData chosen;
+        RunSaveData chosen;
         if (cloud == null && _localCandidate == null) chosen = NewDefault();
         else if (cloud == null) chosen = _localCandidate;
         else if (_localCandidate == null) chosen = cloud;
@@ -119,19 +119,19 @@ public sealed class SaveService : ISaveService, ITickable, IDisposable
 
     public void SaveLocalNow()
     {
-        if (Data == null) Data = NewDefault();
-        Data.TouchNow();
-        Data.Fixup();
+        if (RunData == null) RunData = NewDefault();
+        RunData.TouchNow();
+        RunData.Fixup();
 
-        var json = JsonUtility.ToJson(Data);
+        var json = JsonUtility.ToJson(RunData);
         PlayerPrefs.SetString(LocalKey, json);
         PlayerPrefs.Save();
     }
 
-    public void CommitFrom(IPlayerProgress progress, bool requestCloud = true)
+    public void CommitFrom(IRunProgress progress, bool requestCloud = true)
     {
-        if (Data == null) Data = NewDefault();
-        Data.CaptureFrom(progress);
+        if (RunData == null) RunData = NewDefault();
+        RunData.CaptureFrom(progress);
         SaveLocalNow();
         if (requestCloud) RequestCloudSave();
     }
@@ -160,27 +160,27 @@ public sealed class SaveService : ISaveService, ITickable, IDisposable
         _cloudDirty = false;
         _nextCloudAllowedTime = Time.unscaledTime + CloudMinIntervalSec;
 
-        if (Data == null) Data = NewDefault();
-        Data.TouchNow();
-        Data.Fixup();
+        if (RunData == null) RunData = NewDefault();
+        RunData.TouchNow();
+        RunData.Fixup();
 
-        var json = JsonUtility.ToJson(Data);
+        var json = JsonUtility.ToJson(RunData);
         _platform.CloudSave(json);
     }
 
     public void ResetAllProgress(bool clearCloud)
     {
-        Data = NewDefault();
+        RunData = NewDefault();
         SaveLocalNow();
 
         if (clearCloud && _platform != null && _platform.IsSdkReady && _platform.HasPlayer)
         {
             // безопаснее записать дефолтный сейв, чем "{}"
-            _platform.CloudSave(JsonUtility.ToJson(Data));
+            _platform.CloudSave(JsonUtility.ToJson(RunData));
         }
     }
 
-    public bool TryLoadLocal(out SaveData data)
+    public bool TryLoadLocal(out RunSaveData data)
     {
         data = null;
         if (!PlayerPrefs.HasKey(LocalKey)) return false;
@@ -192,13 +192,13 @@ public sealed class SaveService : ISaveService, ITickable, IDisposable
         return data != null;
     }
 
-    private static SaveData TryParse(string json)
+    private static RunSaveData TryParse(string json)
     {
         if (string.IsNullOrEmpty(json)) return null;
 
         try
         {
-            var d = JsonUtility.FromJson<SaveData>(json);
+            var d = JsonUtility.FromJson<RunSaveData>(json);
             if (d == null) return null;
             d.Fixup();
             return d;
@@ -209,21 +209,21 @@ public sealed class SaveService : ISaveService, ITickable, IDisposable
         }
     }
 
-    private static SaveData NewDefault()
+    private static RunSaveData NewDefault()
     {
-        var d = new SaveData();
+        var d = new RunSaveData();
         d.TouchNow();
         d.Fixup();
         return d;
     }
 
-    private void ApplyLoaded(SaveData data)
+    private void ApplyLoaded(RunSaveData data)
     {
-        Data = data ?? NewDefault();
-        Data.Fixup();
+        RunData = data ?? NewDefault();
+        RunData.Fixup();
     }
 
-    private static SaveData PickNewest(SaveData a, SaveData b) =>
+    private static RunSaveData PickNewest(RunSaveData a, RunSaveData b) =>
         (a.lastWriteUnixUtc >= b.lastWriteUnixUtc) ? a : b;
 
     private void FinishLoad()

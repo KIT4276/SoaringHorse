@@ -42,7 +42,7 @@ public sealed class LiveSystem : ITickable
     /// </summary>
     public void LoadFromProgress()
     {
-        SetLivesInternal(_progressSyncService.ResdLifes(), resetInvulnerability: true);
+        SetLivesInternal(_progressSyncService.ReadLifes(), resetInvulnerability: true);
         _isDead = CurrentLives <= 0;
         ValueIncreased?.Invoke(CurrentLives);
     }
