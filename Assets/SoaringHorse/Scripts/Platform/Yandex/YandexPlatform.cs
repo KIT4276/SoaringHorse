@@ -38,6 +38,8 @@ public sealed class YandexPlatform : MonoBehaviour
     // JS callbacks
     public void OnYsdkInitOk(string _)
     {
+        if (IsSdkReady) return;
+
         IsSdkReady = true;
         Debug.Log("[YandexPlatform] SDK READY");
         SdkReady?.Invoke();
