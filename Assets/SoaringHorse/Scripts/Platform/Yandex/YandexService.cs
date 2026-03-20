@@ -9,6 +9,7 @@ public sealed class YandexService : IYandexService, IInitializable, IDisposable
     private readonly YandexPlatform _platform;
     private readonly IPauseService _pause;
     private readonly MonoBehaviour _runner;
+    private readonly ILocalizationService _localization;
 
     private bool _inited;
     private bool _readySent;
@@ -25,11 +26,13 @@ public sealed class YandexService : IYandexService, IInitializable, IDisposable
     public YandexService(
         YandexPlatform platform,
         IPauseService pause,
-        [Inject(Id = "CoroutineRunner")] MonoBehaviour runner)
+        [Inject(Id = "CoroutineRunner")] MonoBehaviour runner,
+        ILocalizationService localizationService)
     {
         _platform = platform;
         _pause = pause;
         _runner = runner;
+        _localization = localizationService;
     }
 
     public void Initialize()
@@ -46,6 +49,8 @@ public sealed class YandexService : IYandexService, IInitializable, IDisposable
         _platform.RvClosed += OnRvClosed;
 
         _platform.SdkReady += OnPlatformSdkReady;
+
+        _platform.LanguageDetected += OnLanguageDetected;
 
         if (_platform.IsSdkReady)
             RaiseSdkReadyOnce();
@@ -65,6 +70,7 @@ public sealed class YandexService : IYandexService, IInitializable, IDisposable
         _platform.RvClosed -= OnRvClosed;
 
         _platform.SdkReady -= OnPlatformSdkReady;
+        _platform.LanguageDetected -= OnLanguageDetected;
     }
 
     public void Init()
@@ -79,6 +85,11 @@ public sealed class YandexService : IYandexService, IInitializable, IDisposable
         if (_readySent) return;
         _readySent = true;
         _platform?.Ready();
+    }
+
+    private void OnLanguageDetected(string lang)
+    {
+        _localization.ApplySdkLanguage(lang);
     }
 
     public void TryShowInterstitial_UpgradeBought()

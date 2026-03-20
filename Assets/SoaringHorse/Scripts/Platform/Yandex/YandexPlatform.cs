@@ -20,20 +20,29 @@ public sealed class YandexPlatform : MonoBehaviour
     public event Action RvClosed;
 
     public event Action<string> CloudDataReceived;
+    public event Action<string> LanguageDetected;
 
     public void Init()
     {
-       // Debug.Log($"[YandexPlatform] Init on GO: {gameObject.name}");
+        // Debug.Log($"[YandexPlatform] Init on GO: {gameObject.name}");
         YandexSDKBridge.Init(gameObject.name);
     }
 
-    public void Ready() => YandexSDKBridge.Ready();
+    public void Ready() =>
+        YandexSDKBridge.Ready();
 
-    public void ShowInterstitial() => YandexSDKBridge.ShowInterstitial();
-    public void ShowRewarded() => YandexSDKBridge.ShowRewarded();
+    public void OnLanguageDetected(string lang) =>
+        LanguageDetected?.Invoke(lang);
 
-    public void CloudLoad() => YandexSDKBridge.CloudLoad();
-    public void CloudSave(string json) => YandexSDKBridge.CloudSave(json);
+    public void ShowInterstitial() =>
+        YandexSDKBridge.ShowInterstitial();
+    public void ShowRewarded() =>
+        YandexSDKBridge.ShowRewarded();
+
+    public void CloudLoad() =>
+        YandexSDKBridge.CloudLoad();
+    public void CloudSave(string json) =>
+        YandexSDKBridge.CloudSave(json);
 
     // JS callbacks
     public void OnYsdkInitOk(string _)

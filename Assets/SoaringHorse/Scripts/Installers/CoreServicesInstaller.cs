@@ -8,6 +8,8 @@ public class CoreServicesInstaller : MonoInstaller
 
         Container.Bind<IRunProgress>().To<RunProgress>().AsSingle();
 
+        Container.BindInterfacesAndSelfTo<LocalizationService>().AsSingle();
+
         Container.BindInterfacesAndSelfTo<YandexService>().AsSingle().NonLazy();
 
         Container.BindInterfacesAndSelfTo<SaveService>().AsSingle().NonLazy();
