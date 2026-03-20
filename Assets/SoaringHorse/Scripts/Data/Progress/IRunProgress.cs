@@ -2,7 +2,7 @@ using System;
 
 public interface IRunProgress
 {
-    float Score { get; }
+    int Score { get; }
     int Lifes { get; }
     float Speed { get; }
     float RunTime { get; }
@@ -10,7 +10,7 @@ public interface IRunProgress
     event Action Changed;
 
     void ApplyFromSave(RunSaveData data);
-    void AddScore(float delta);
+    void AddScore(int delta);
     void SetLifes(int value);
     void SetSpeed (float value);
     void SetRunTime(float value);

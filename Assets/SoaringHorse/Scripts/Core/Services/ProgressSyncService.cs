@@ -10,7 +10,7 @@ public class ProgressSyncService
     public float ReadScore() =>
         _progress.Score;
 
-    public void SyncScore(float value) =>
+    public void SyncScore(int value) =>
         _progress.AddScore(value);
 
     public int ReadLifes() =>

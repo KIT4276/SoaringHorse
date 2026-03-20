@@ -9,7 +9,7 @@ public class Bonus : BaseRecyclable
     [SerializeField] private Sprite _lifeBonusSprite;
     [SerializeField] private Sprite _luckBonusSprite;
     [Space]
-    [SerializeField] private int _value = 1;
+    [SerializeField] private int _value = 5;
 
     private bool _inited = false;
     private Coroutine _waitInitRoutine;
@@ -35,7 +35,7 @@ public class Bonus : BaseRecyclable
         switch (BonusType)
         {
             case BonusType.luck:
-                _scoreSystem.AddScore((float)_value);
+                _scoreSystem.AddScore(_value);
                 break;
             case BonusType.life:
                 _liveSystem.AddLives(1);

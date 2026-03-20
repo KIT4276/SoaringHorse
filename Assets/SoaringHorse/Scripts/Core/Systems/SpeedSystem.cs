@@ -22,7 +22,6 @@ public class SpeedSystem : ITickable
         _minSpeed = config.EnvironmentMoveSpeed;
         _speedTickTime = config.SpeedTickTime;
         _speedIncreasePerTick = config.SpeedIncreasePerTick;
-
     }
 
     public void Initialize()
@@ -59,7 +58,8 @@ public class SpeedSystem : ITickable
 
     private void SetProgressAndNotify()
     {
-        _progressSyncService.SetSpeed(CurrentSpeed);
+        _progressSyncService.SetSpeed(CurrentSpeed);// вызывать в другом месте в нужные моменты,
+                                                    // а не переписывать каждые 3 секунды
         CurrentSpeedChanged?.Invoke(CurrentSpeed);
     }
 }

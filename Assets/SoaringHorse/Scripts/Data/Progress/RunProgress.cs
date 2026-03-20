@@ -4,14 +4,14 @@ public sealed class RunProgress : IRunProgress
 {
     public event Action Changed;
 
-    private float _score;
+    private int _score;
     private int _lifes;
     private float _speed;
     private float _runTime;
 
     private bool _suppress;
 
-    public float Score => _score;
+    public int Score => _score;
     public int Lifes => _lifes;
 
     public float Speed => _speed;
@@ -31,7 +31,7 @@ public sealed class RunProgress : IRunProgress
         _suppress = false;
     }
 
-    public void AddScore(float delta)
+    public void AddScore(int delta)
     {
         if (delta == 0) return;
         _score += delta;
@@ -66,5 +66,6 @@ public sealed class RunProgress : IRunProgress
         if (_suppress) return;
         Changed?.Invoke();
     }
+
 }
 
