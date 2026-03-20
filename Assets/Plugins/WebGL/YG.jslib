@@ -60,6 +60,10 @@ mergeInto(LibraryManager.library, {
             if (bridge.initialized) {
                 console.log("[YG_Init] bridge already initialized");
                 send("OnYsdkInitOk", "");
+
+                const lang = bridge.ysdk?.environment?.i18n?.lang || "en";
+                send("OnLanguageDetected", lang);
+
                 send("OnPlayerReady", bridge.player ? "1" : "0");
                 return;
             }
@@ -80,6 +84,10 @@ mergeInto(LibraryManager.library, {
                     bridge.initialized = true;
 
                     send("OnYsdkInitOk", "");
+
+                    const lang = ysdk?.environment?.i18n?.lang || "en";
+                    console.log("[YG_Init] detected language =", lang);
+                    send("OnLanguageDetected", lang);
 
                     if (ysdk.features && ysdk.features.GameplayAPI) {
                         try {
