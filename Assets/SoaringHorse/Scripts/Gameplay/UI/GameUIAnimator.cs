@@ -5,10 +5,6 @@ using UnityEngine.UI;
 
 public class GameUIAnimator : MonoBehaviour
 {
-    private const float ScoreScaleMultiplier = 0.7f;
-    private const float ScoreShakeMultiplier = 0.45f;
-    private const float ScoreDurationMultiplier = 0.85f;
-
     [Header("Images")]
     [SerializeField] private Image _lifeImage;
     [SerializeField] private Image _scoreImage;
@@ -20,6 +16,10 @@ public class GameUIAnimator : MonoBehaviour
     [SerializeField] private float settleDuration = 0.08f;
     [SerializeField] private float shakeStrength = 8f;
     [SerializeField] private float shakeDuration = 0.12f;
+    [Header("Score Multipliers")]
+    [SerializeField] private float _scoreScaleMultiplier = 0.7f;
+    [SerializeField] private float _scoreShakeMultiplier = 0.45f;
+    [SerializeField] private float _scoreDurationMultiplier = 0.85f;
 
     private readonly Dictionary<Image, Vector3> _baseScales = new();
     private readonly Dictionary<Image, Vector2> _baseAnchoredPositions = new();
@@ -39,9 +39,9 @@ public class GameUIAnimator : MonoBehaviour
     public void ScoreImageJuiceBump() => 
         JuiceBump(
             _scoreImage,
-            scaleMultiplier: ScoreScaleMultiplier,
-            shakeMultiplier: ScoreShakeMultiplier,
-            durationMultiplier: ScoreDurationMultiplier);
+            scaleMultiplier: _scoreScaleMultiplier,
+            shakeMultiplier: _scoreShakeMultiplier,
+            durationMultiplier: _scoreDurationMultiplier);
 
     public void JuiceBump(
         Image image,
