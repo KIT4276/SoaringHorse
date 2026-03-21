@@ -5,7 +5,7 @@ using Zenject;
 public class SpeedSystem : ITickable
 {
     private readonly float _minSpeed;
-    private readonly ProgressSyncService _progressSyncService;
+    private readonly RunProgressSyncService _progressSyncService;
 
     private float _speedTickTime;
     private float _speedIncreasePerTick;
@@ -16,7 +16,7 @@ public class SpeedSystem : ITickable
 
     public event Action<float> CurrentSpeedChanged;
 
-    public SpeedSystem(ProgressSyncService progressSyncService, EnvironmentConfig config)
+    public SpeedSystem(RunProgressSyncService progressSyncService, EnvironmentConfig config)
     {
         _progressSyncService = progressSyncService;
         _minSpeed = config.EnvironmentMoveSpeed;
@@ -58,8 +58,8 @@ public class SpeedSystem : ITickable
 
     private void SetProgressAndNotify()
     {
-        _progressSyncService.SetSpeed(CurrentSpeed);// вызывать в другом месте в нужные моменты,
-                                                    // а не переписывать каждые 3 секунды
+        _progressSyncService.SetSpeed(CurrentSpeed);// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ,
+                                                    // пїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ 3 пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
         CurrentSpeedChanged?.Invoke(CurrentSpeed);
     }
 }

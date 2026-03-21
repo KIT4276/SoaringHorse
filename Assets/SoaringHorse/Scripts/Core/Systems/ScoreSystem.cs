@@ -4,7 +4,7 @@ using Zenject;
 
 public class ScoreSystem : ITickable
 {
-    private readonly ProgressSyncService _progressSyncService;
+    private readonly RunProgressSyncService _progressSyncService;
     private readonly int _scoreIncreasePerTick;
     private readonly float _scoreTickTime;
 
@@ -15,7 +15,7 @@ public class ScoreSystem : ITickable
     public event Action<float> ChangeValue;
     public event Action ChangeIntegerValue;
 
-    public ScoreSystem(ProgressSyncService progressSyncService, ProgressionConfig config)
+    public ScoreSystem(RunProgressSyncService progressSyncService, ProgressionConfig config)
     {
         _progressSyncService = progressSyncService;
         _scoreIncreasePerTick = config.ScoreIncreasePerTick;

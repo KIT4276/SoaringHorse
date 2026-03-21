@@ -4,14 +4,14 @@ public class MetaProgress : IMetaProgress
 {
     private int _bestScore;
     private int _totalHorseshoes;
-    private int _totalRevives;
+    private int _bestRevives;
     private float _bestRunTime;
 
     private bool _suppress;
 
     public int BestScore => _bestScore;
     public int TotalHorseshoes => _totalHorseshoes;
-    public int TotalRevives => _totalRevives;
+    public int BestRevives => _bestRevives;
     public float BestRunTime => _bestRunTime;
 
     public event Action Changed;
@@ -23,7 +23,7 @@ public class MetaProgress : IMetaProgress
         _suppress = true;
         _bestScore = data.bestScore;
         _totalHorseshoes = data.totalHorseshoes;
-        _totalRevives = data.totalRevives;
+        _bestRevives = data.totalRevives;
         _bestRunTime = data.bestRunTime;
         _suppress = false;
     }
@@ -46,9 +46,9 @@ public class MetaProgress : IMetaProgress
         Notify();
     }
 
-    public void SetTotalRevives(int revives)
+    public void SetBestRevives(int revives)
     {
-        _totalRevives = revives;
+        _bestRevives = revives;
         Notify();
     }
 

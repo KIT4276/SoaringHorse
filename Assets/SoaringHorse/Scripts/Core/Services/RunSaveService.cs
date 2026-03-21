@@ -2,7 +2,7 @@ using System;
 using UnityEngine;
 using Zenject;
 
-public sealed class SaveService : ISaveService, ITickable, IDisposable
+public sealed class RunSaveService : ISaveService, ITickable, IDisposable
 {
     private const string LocalKeyPrefix = "save_v";
     private static string LocalKey => $"{LocalKeyPrefix}{RunSaveData.CurrentVersion}";
@@ -26,7 +26,7 @@ public sealed class SaveService : ISaveService, ITickable, IDisposable
     private float _cloudLoadDeadline;
     private const float CloudLoadTimeoutSec = 3f;
 
-    public SaveService(YandexPlatform platform)
+    public RunSaveService(YandexPlatform platform)
     {
         _platform = platform;
     }
@@ -175,7 +175,7 @@ public sealed class SaveService : ISaveService, ITickable, IDisposable
 
         if (clearCloud && _platform != null && _platform.IsSdkReady && _platform.HasPlayer)
         {
-            // безопаснее записать дефолтный сейв, чем "{}"
+            // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ, пїЅпїЅпїЅ "{}"
             _platform.CloudSave(JsonUtility.ToJson(RunData));
         }
     }

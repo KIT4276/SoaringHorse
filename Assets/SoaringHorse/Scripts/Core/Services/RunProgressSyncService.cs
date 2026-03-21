@@ -1,10 +1,10 @@
 using JetBrains.Annotations;
 
-public class ProgressSyncService
+public class RunProgressSyncService
 {
     private readonly IRunProgress _progress;
 
-    public ProgressSyncService(IRunProgress progress) =>
+    public RunProgressSyncService(IRunProgress progress) =>
         _progress = progress;
 
     public float ReadScore() =>

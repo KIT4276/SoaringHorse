@@ -4,7 +4,7 @@ public interface IMetaProgress
 {
     int BestScore { get; }
     int TotalHorseshoes { get; }
-    int TotalRevives { get; }
+    int BestRevives { get; }
     float BestRunTime { get; }
 
     event Action Changed;
@@ -13,6 +13,6 @@ public interface IMetaProgress
 
     void SetBestScore(int bestScore);
     void SetTotalHorseshoes(int totalHorseshoes);
-    void SetTotalRevives(int revives);
+    void SetBestRevives(int revives);
     void SetBestRunTime(float bestRunTime);
 }
