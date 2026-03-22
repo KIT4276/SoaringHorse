@@ -50,7 +50,7 @@ public sealed class MetaProgressSyncService : IMetaProgressSyncService
         if (candidateRunTime <= 0f)
             return;
 
-        if (_progress.BestRunTime > 0f && candidateRunTime >= _progress.BestRunTime)
+        if (_progress.BestRunTime > 0f && candidateRunTime <= _progress.BestRunTime)
             return;
 
         _progress.SetBestRunTime(candidateRunTime);
