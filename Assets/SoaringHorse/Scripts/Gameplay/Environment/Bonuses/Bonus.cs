@@ -9,20 +9,23 @@ public class Bonus : BaseRecyclable
     [SerializeField] private Sprite _lifeBonusSprite;
     [SerializeField] private Sprite _luckBonusSprite;
     [Space]
-    [SerializeField] private int _value = 1;
+    [SerializeField] private int _value = 5;
 
     private bool _inited = false;
     private Coroutine _waitInitRoutine;
     private LiveSystem _liveSystem;
     private ScoreSystem _scoreSystem;
+    private HorseshoeSystem _horseshoeSystem;
 
     public BonusType BonusType { get; private set; }
 
     [Inject]
-    private void Construct(LiveSystem liveSystem, ScoreSystem scoreSystem)
+    private void Construct(LiveSystem liveSystem, ScoreSystem scoreSystem,
+     HorseshoeSystem horseshoeSystem)
     {
         _liveSystem = liveSystem;
         _scoreSystem = scoreSystem;
+        _horseshoeSystem = horseshoeSystem;
     }
 
     public void Initialize(BonusType bonusType)
@@ -30,12 +33,13 @@ public class Bonus : BaseRecyclable
         BonusType = bonusType;
         _inited = true;
     }
-    public  void RewardedDespawn()
+    public void RewardedDespawn()
     {
         switch (BonusType)
         {
             case BonusType.luck:
-                _scoreSystem.AddScore((float)_value);
+                _scoreSystem.AddScore(_value);
+                _horseshoeSystem.Add();
                 break;
             case BonusType.life:
                 _liveSystem.AddLives(1);
@@ -58,7 +62,7 @@ public class Bonus : BaseRecyclable
 
     private void ApplySprite()
     {
-        
+
         switch (BonusType)
         {
             case BonusType.luck:

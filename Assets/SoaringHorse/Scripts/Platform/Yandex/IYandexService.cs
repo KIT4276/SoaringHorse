@@ -2,6 +2,8 @@ using System;
 
 public interface IYandexService
 {
+    event Action SdkReady;
+
     void Init();
     void ReadyOnce();
 

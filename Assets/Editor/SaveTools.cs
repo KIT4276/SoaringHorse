@@ -9,7 +9,7 @@ public static class SaveTools
     [MenuItem("Tools/Save/Clear All Saves")]
     public static void ClearAllSaves()
     {
-        var key = $"{LocalKeyPrefix}{SaveData.CurrentVersion}";
+        var key = $"{LocalKeyPrefix}{RunSaveData.CurrentVersion}";
 
         var hasKey = PlayerPrefs.HasKey(key);
 

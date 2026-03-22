@@ -16,5 +16,5 @@ MonoBehaviour:
   _spawnMargin: 7
   _despawnMargin: 7
   _speedMultiplier: 0.1
-  _speedIncreasePerTick: 0.02
+  _speedIncreasePerTick: 0.04
   _speedTickTime: 3

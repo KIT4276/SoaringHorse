@@ -1,7 +1,7 @@
 mergeInto(LibraryManager.library, {
     YG_Init: function (goNamePtr) {
         try {
-            const goName = UTF8ToString(goNamePtr);
+            var goName = UTF8ToString(goNamePtr);
             console.log("[YG_Init] called, goName =", goName);
 
             window.__ygBridge = window.__ygBridge || {
@@ -12,12 +12,12 @@ mergeInto(LibraryManager.library, {
                 send: null
             };
 
-            const bridge = window.__ygBridge;
+            var bridge = window.__ygBridge;
             bridge.goName = goName;
 
             function send(method, value) {
                 try {
-                    const payload = (value === undefined || value === null) ? "" : String(value);
+                    var payload = (value === undefined || value === null) ? "" : String(value);
 
                     console.log("[YG->Unity] send attempt:", {
                         goName: bridge.goName,
@@ -58,8 +58,19 @@ mergeInto(LibraryManager.library, {
             bridge.send = send;
 
             if (bridge.initialized) {
+                var cachedLang = "en";
+
                 console.log("[YG_Init] bridge already initialized");
                 send("OnYsdkInitOk", "");
+
+                if (bridge.ysdk &&
+                    bridge.ysdk.environment &&
+                    bridge.ysdk.environment.i18n &&
+                    bridge.ysdk.environment.i18n.lang) {
+                    cachedLang = bridge.ysdk.environment.i18n.lang;
+                }
+
+                send("OnLanguageDetected", cachedLang);
                 send("OnPlayerReady", bridge.player ? "1" : "0");
                 return;
             }
@@ -74,12 +85,24 @@ mergeInto(LibraryManager.library, {
 
             YaGames.init()
                 .then(function (ysdk) {
+                    var lang = "en";
+
                     console.log("[YG_Init] YaGames.init() success", ysdk);
 
                     bridge.ysdk = ysdk;
                     bridge.initialized = true;
 
                     send("OnYsdkInitOk", "");
+
+                    if (ysdk &&
+                        ysdk.environment &&
+                        ysdk.environment.i18n &&
+                        ysdk.environment.i18n.lang) {
+                        lang = ysdk.environment.i18n.lang;
+                    }
+
+                    console.log("[YG_Init] detected language =", lang);
+                    send("OnLanguageDetected", lang);
 
                     if (ysdk.features && ysdk.features.GameplayAPI) {
                         try {
@@ -128,7 +151,7 @@ mergeInto(LibraryManager.library, {
         try {
             console.log("[YG_Ready] called");
 
-            const bridge = window.__ygBridge;
+            var bridge = window.__ygBridge;
             if (!bridge) {
                 console.warn("[YG_Ready] bridge unavailable");
                 return;
@@ -139,11 +162,9 @@ mergeInto(LibraryManager.library, {
                 return;
             }
 
-            if (
-                bridge.ysdk.features &&
+            if (bridge.ysdk.features &&
                 bridge.ysdk.features.LoadingAPI &&
-                bridge.ysdk.features.LoadingAPI.ready
-            ) {
+                bridge.ysdk.features.LoadingAPI.ready) {
                 console.log("[YG_Ready] LoadingAPI.ready()");
                 bridge.ysdk.features.LoadingAPI.ready();
             } else {
@@ -158,7 +179,7 @@ mergeInto(LibraryManager.library, {
         try {
             console.log("[YG_ShowFullscreenAdv] called");
 
-            const bridge = window.__ygBridge;
+            var bridge = window.__ygBridge;
             if (!bridge) {
                 console.warn("[YG_ShowFullscreenAdv] bridge unavailable");
                 return;
@@ -194,7 +215,7 @@ mergeInto(LibraryManager.library, {
             });
         } catch (e) {
             console.error("[YG_ShowFullscreenAdv] fatal error:", e);
-            const bridge = window.__ygBridge;
+            var bridge = window.__ygBridge;
             if (bridge && bridge.send) {
                 bridge.send("OnAdError", e && e.message ? e.message : String(e));
             }
@@ -205,7 +226,7 @@ mergeInto(LibraryManager.library, {
         try {
             console.log("[YG_ShowRewardedVideo] called");
 
-            const bridge = window.__ygBridge;
+            var bridge = window.__ygBridge;
             if (!bridge) {
                 console.warn("[YG_ShowRewardedVideo] bridge unavailable");
                 return;
@@ -241,7 +262,7 @@ mergeInto(LibraryManager.library, {
             });
         } catch (e) {
             console.error("[YG_ShowRewardedVideo] fatal error:", e);
-            const bridge = window.__ygBridge;
+            var bridge = window.__ygBridge;
             if (bridge && bridge.send) {
                 bridge.send("OnRvError", e && e.message ? e.message : String(e));
             }
@@ -252,7 +273,7 @@ mergeInto(LibraryManager.library, {
         try {
             console.log("[YG_PlayerGetData] called");
 
-            const bridge = window.__ygBridge;
+            var bridge = window.__ygBridge;
             if (!bridge || !bridge.send) {
                 console.warn("[YG_PlayerGetData] bridge unavailable");
                 return;
@@ -262,7 +283,7 @@ mergeInto(LibraryManager.library, {
                 console.log("[YG_PlayerGetData] loading from cloud player.getData()");
                 bridge.player.getData()
                     .then(function (data) {
-                        const json = JSON.stringify(data || {});
+                        var json = JSON.stringify(data || {});
                         console.log("[YG_PlayerGetData] cloud success, json length =", json.length);
                         bridge.send("OnCloudData", json);
                     })
@@ -276,7 +297,7 @@ mergeInto(LibraryManager.library, {
             console.warn("[YG_PlayerGetData] player.getData unavailable, fallback to localStorage");
 
             try {
-                const local = localStorage.getItem("YG_PlayerData");
+                var local = localStorage.getItem("YG_PlayerData");
                 console.log("[YG_PlayerGetData] localStorage success, hasData =", !!local);
                 bridge.send("OnCloudData", local || "");
             } catch (e) {
@@ -290,13 +311,13 @@ mergeInto(LibraryManager.library, {
 
     YG_PlayerSetData: function (jsonPtr) {
         try {
-            const json = UTF8ToString(jsonPtr);
+            var json = UTF8ToString(jsonPtr);
             console.log("[YG_PlayerSetData] called, json length =", json ? json.length : 0);
 
-            const bridge = window.__ygBridge;
+            var bridge = window.__ygBridge;
 
             if (bridge && bridge.player && bridge.player.setData) {
-                let parsedData = {};
+                var parsedData = {};
 
                 try {
                     parsedData = json ? JSON.parse(json) : {};
@@ -343,7 +364,7 @@ mergeInto(LibraryManager.library, {
             }
         } catch (e) {
             console.error("[YG_PlayerSetData] fatal error:", e);
-            const bridge = window.__ygBridge;
+            var bridge = window.__ygBridge;
             if (bridge && bridge.send) {
                 bridge.send("OnCloudSaveError", e && e.message ? e.message : String(e));
             }

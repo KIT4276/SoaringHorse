@@ -27,7 +27,8 @@ public class EnvironmentInstaller : MonoInstaller
     {
         Container.Bind<EnvironmentMove>()
                     .FromComponentInNewPrefab(_environmentPrefab)
-                    .AsSingle();
+                    .AsSingle()
+                    .NonLazy();
 
         Container.Bind<IRewardedService>()
             .To<RewardedService>()

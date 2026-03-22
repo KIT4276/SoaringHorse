@@ -2,7 +2,7 @@ using System;
 
 public interface ISaveService
 {
-    SaveData Data { get; }
+    RunSaveData RunData { get; }
     bool IsLoaded { get; }
     event Action Loaded;
 
@@ -11,8 +11,8 @@ public interface ISaveService
     void SaveLocalNow();
     void RequestCloudSave();
 
-    void CommitFrom(IPlayerProgress progress, bool requestCloud = true);
+    void CommitFrom(IRunProgress progress, bool requestCloud = true);
 
     void ResetAllProgress(bool clearCloud);
-    bool TryLoadLocal(out SaveData data);
+    bool TryLoadLocal(out RunSaveData data);
 }

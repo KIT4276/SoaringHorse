@@ -1,0 +1,65 @@
+using System;
+using UnityEngine;
+using Zenject;
+
+public class SpeedSystem : ITickable
+{
+    private readonly float _minSpeed;
+    private readonly RunProgressSyncService _progressSyncService;
+
+    private float _speedTickTime;
+    private float _speedIncreasePerTick;
+
+    private float _time;
+
+    public float CurrentSpeed { get; private set; }
+
+    public event Action<float> CurrentSpeedChanged;
+
+    public SpeedSystem(RunProgressSyncService progressSyncService, EnvironmentConfig config)
+    {
+        _progressSyncService = progressSyncService;
+        _minSpeed = config.EnvironmentMoveSpeed;
+        _speedTickTime = config.SpeedTickTime;
+        _speedIncreasePerTick = config.SpeedIncreasePerTick;
+    }
+
+    public void Initialize()
+    {
+        CurrentSpeed = Mathf.Max(_progressSyncService.ReadSpeed(), _minSpeed);
+        CurrentSpeedChanged?.Invoke(CurrentSpeed);
+    }
+
+    public void Tick()
+    {
+        _time += Time.deltaTime;
+
+        if (_time < _speedTickTime)
+            return;
+
+        _time = 0f;
+        AddSpeed(_speedIncreasePerTick);
+    }
+
+    public void ReduceByPercent(float value)
+    {
+        CurrentSpeed *= 1 - value;
+        if (CurrentSpeed < _minSpeed)
+            CurrentSpeed = _minSpeed;
+
+        SetProgressAndNotify();
+    }
+
+    private void AddSpeed(float speedIncreasePerTick)
+    {
+        CurrentSpeed += speedIncreasePerTick;
+        SetProgressAndNotify();
+    }
+
+    private void SetProgressAndNotify()
+    {
+        _progressSyncService.SetSpeed(CurrentSpeed);// �������� � ������ ����� � ������ �������,
+                                                    // � �� ������������ ������ 3 �������
+        CurrentSpeedChanged?.Invoke(CurrentSpeed);
+    }
+}

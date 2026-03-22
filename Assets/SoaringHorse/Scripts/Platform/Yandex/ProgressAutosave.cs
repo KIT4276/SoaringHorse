@@ -3,10 +3,10 @@ using Zenject;
 
 public sealed class ProgressAutosave : IInitializable, IDisposable
 {
-    private readonly IPlayerProgress _progress;
+    private readonly IRunProgress _progress;
     private readonly ISaveService _save;
 
-    public ProgressAutosave(IPlayerProgress progress, ISaveService save)
+    public ProgressAutosave(IRunProgress progress, ISaveService save)
     {
         _progress = progress;
         _save = save;

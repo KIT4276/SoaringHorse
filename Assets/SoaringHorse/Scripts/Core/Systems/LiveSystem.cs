@@ -6,7 +6,7 @@ public sealed class LiveSystem : ITickable
 {
     private readonly int _maxLives;
     private readonly float _invulnerabilityTime;
-    private readonly ProgressSyncService _progressSyncService;
+    private readonly RunProgressSyncService _progressSyncService;
     private float _invulnerabilityRemaining;
     private bool _isDead;
 
@@ -18,7 +18,7 @@ public sealed class LiveSystem : ITickable
     public event Action<int> ValueDecreased;
     public event Action Death;
 
-    public LiveSystem(ProgressSyncService progressSyncService, HeroConfig config)
+    public LiveSystem(RunProgressSyncService progressSyncService, HeroConfig config)
     {
         _progressSyncService = progressSyncService;
         _maxLives = config.MaxLives; 
@@ -36,21 +36,13 @@ public sealed class LiveSystem : ITickable
             _invulnerabilityRemaining = 0f;
     }
 
-    /// <summary>
-    /// Загружает жизни из сохранённого прогресса.
-    /// Использовать при входе в игровую сессию из save.
-    /// </summary>
     public void LoadFromProgress()
     {
-        SetLivesInternal(_progressSyncService.ResdLifes(), resetInvulnerability: true);
+        SetLivesInternal(_progressSyncService.ReadLifes(), resetInvulnerability: true);
         _isDead = CurrentLives <= 0;
         ValueIncreased?.Invoke(CurrentLives);
     }
 
-    /// <summary>
-    /// Полный сброс состояния для нового рана/рестарта.
-    /// Использовать при старте новой игры или рестарте после смерти.
-    /// </summary>
     public void ResetForNewRun(int startLives)
     {
         SetLivesInternal(startLives, resetInvulnerability: true);

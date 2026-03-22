@@ -4,29 +4,35 @@ using Zenject;
 
 public sealed class YandexService : IYandexService, IInitializable, IDisposable
 {
+    public event Action SdkReady;
+
     private readonly YandexPlatform _platform;
     private readonly IPauseService _pause;
     private readonly MonoBehaviour _runner;
+    private readonly ILocalizationService _localization;
 
     private bool _inited;
     private bool _readySent;
+    private bool _sdkReadyRaised;
 
     private bool _rvInProgress;
 
     private float _nextInterstitialTime = 0f;
     private const float InterstitialCooldownSec = 90f;
 
-    //private const bool MockRewardedWhenUnavailable = false;
-    //private const float MockDelaySeconds = 0.25f;
-
     public bool HasPlayer => _platform != null && _platform.HasPlayer;
     public bool IsSdkReady => _platform != null && _platform.IsSdkReady;
 
-    public YandexService(YandexPlatform platform, IPauseService pause, [Inject(Id = "CoroutineRunner")] MonoBehaviour runner)
+    public YandexService(
+        YandexPlatform platform,
+        IPauseService pause,
+        [Inject(Id = "CoroutineRunner")] MonoBehaviour runner,
+        ILocalizationService localizationService)
     {
         _platform = platform;
         _pause = pause;
         _runner = runner;
+        _localization = localizationService;
     }
 
     public void Initialize()
@@ -41,6 +47,13 @@ public sealed class YandexService : IYandexService, IInitializable, IDisposable
 
         _platform.RvOpened += OnRvOpened;
         _platform.RvClosed += OnRvClosed;
+
+        _platform.SdkReady += OnPlatformSdkReady;
+
+        _platform.LanguageDetected += OnLanguageDetected;
+
+        if (_platform.IsSdkReady)
+            RaiseSdkReadyOnce();
     }
 
     public void Dispose()
@@ -55,6 +68,9 @@ public sealed class YandexService : IYandexService, IInitializable, IDisposable
 
         _platform.RvOpened -= OnRvOpened;
         _platform.RvClosed -= OnRvClosed;
+
+        _platform.SdkReady -= OnPlatformSdkReady;
+        _platform.LanguageDetected -= OnLanguageDetected;
     }
 
     public void Init()
@@ -71,6 +87,11 @@ public sealed class YandexService : IYandexService, IInitializable, IDisposable
         _platform?.Ready();
     }
 
+    private void OnLanguageDetected(string lang)
+    {
+        _localization.ApplySdkLanguage(lang);
+    }
+
     public void TryShowInterstitial_UpgradeBought()
     {
         if (_platform == null) return;
@@ -84,7 +105,6 @@ public sealed class YandexService : IYandexService, IInitializable, IDisposable
 
     public void ShowRewarded(Action onReward)
     {
-       // Debug.Log($"[YandexService] ShowRewarded, platform null={_platform == null}, sdkReady={_platform?.IsSdkReady}");
 #if UNITY_EDITOR
         onReward?.Invoke();
 #endif
@@ -116,6 +136,15 @@ public sealed class YandexService : IYandexService, IInitializable, IDisposable
         _platform.RvClosed += OnClosed;
 
         _platform.ShowRewarded();
+    }
+
+    private void OnPlatformSdkReady() => RaiseSdkReadyOnce();
+
+    private void RaiseSdkReadyOnce()
+    {
+        if (_sdkReadyRaised) return;
+        _sdkReadyRaised = true;
+        SdkReady?.Invoke();
     }
 
     private void OnPauseRequested() => _pause.RequestPause();

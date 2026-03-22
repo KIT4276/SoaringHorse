@@ -3,20 +3,23 @@ using System;
 public sealed class RewardedService : IRewardedService
 {
     private readonly IYandexService _yandex;
-    private readonly EnvironmentMove _environmentMove;
     private readonly LiveSystem _liveSystem;
+    private readonly SpeedSystem _speedSystem;
+    private readonly RevivesSystem _revivesSystem;
     private bool _inProgress;
 
     public event Action RewardGranted;
 
     public RewardedService(
         IYandexService yandex,
-        EnvironmentMove environmentMove,
-        LiveSystem liveSystem)
+        LiveSystem liveSystem,
+        SpeedSystem speedSystem,
+        RevivesSystem revivesSystem)
     {
         _yandex = yandex;
-        _environmentMove = environmentMove;
         _liveSystem = liveSystem;
+        _speedSystem = speedSystem;
+        _revivesSystem = revivesSystem;
     }
 
     public void TryGiveLifes()
@@ -40,13 +43,14 @@ public sealed class RewardedService : IRewardedService
     private void OnLifeRewarded()
     {
         _liveSystem.Revive(1);
+        _revivesSystem.RegisterRevive();
         _inProgress = false;
         RewardGranted?.Invoke();
     }
 
     private void OnSpeedRewarded()
     {
-        _environmentMove.ReduceByPercent(0.3f);
+        _speedSystem.ReduceByPercent(0.3f);
         _inProgress = false;
         RewardGranted?.Invoke();
     }
